@@ -39489,6 +39489,16 @@ packages:
         overrides:
           - goos: windows
             format: zip
+      - version_constraint: Version startsWith "rc-" || semver("<= 1.7.0")
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: foundry_{{.Version}}_{{.OS}}_{{.Arch}}.{{.Format}}
+        format: tar.gz
+        windows_arm_emulation: true
+        replacements:
+          windows: win32
+        overrides:
+          - goos: windows
+            format: zip
       - version_constraint: "true"
         url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
         asset: foundry_{{.Version}}_{{.OS}}_{{.Arch}}.{{.Format}}
@@ -39499,6 +39509,9 @@ packages:
         overrides:
           - goos: windows
             format: zip
+        github_artifact_attestations:
+          predicate_type: https://spdx.dev/Document/v2.3
+          signer_workflow: foundry-rs/foundry/\.github/workflows/release\.yml
   - type: github_release
     repo_owner: freshautomations
     repo_name: stoml
@@ -70293,6 +70306,25 @@ packages:
       type: github_release
       asset: notation_{{trimV .Version}}_checksums.txt
       algorithm: sha256
+  - type: http
+    repo_owner: npm
+    repo_name: cli
+    description: the package manager for JavaScript
+    version_filter: Version matches "^v[0-9]+\\.[0-9]+\\.[0-9]+$"
+    url: https://registry.npmjs.org/npm/-/npm-{{trimV .Version}}.tgz
+    format: tar.gz
+    files:
+      - name: npm
+        src: package/bin/npm-cli.js
+      - name: npx
+        src: package/bin/npx-cli.js
+    overrides:
+      - goos: windows
+        files:
+          - name: npm
+            src: package/bin/npm.cmd
+          - name: npx
+            src: package/bin/npx.cmd
   - type: github_archive
     repo_owner: npryce
     repo_name: adr-tools
