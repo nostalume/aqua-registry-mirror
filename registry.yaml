@@ -8083,6 +8083,47 @@ packages:
           - darwin/arm64
           - windows
   - type: github_release
+    repo_owner: SurgeDM
+    repo_name: Surge
+    description: Blazing fast TUI download manager built in Go for power users
+    files:
+      - name: surge
+    version_constraint: "false"
+    version_overrides:
+      - version_constraint: Version == "v0.1.0"
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: surge_{{trimV .Version}}-SNAPSHOT-b332004_{{.OS}}_{{.Arch}}.{{.Format}}
+        format: tar.gz
+        checksum:
+          type: github_release
+          asset: surge_{{trimV .Version}}-SNAPSHOT-b332004_checksums.txt
+          algorithm: sha256
+        overrides:
+          - goos: windows
+            format: zip
+      - version_constraint: semver("<= 0.6.7")
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: surge_{{trimV .Version}}_{{.OS}}_{{.Arch}}.{{.Format}}
+        format: tar.gz
+        checksum:
+          type: github_release
+          asset: surge_{{trimV .Version}}_checksums.txt
+          algorithm: sha256
+        overrides:
+          - goos: windows
+            format: zip
+      - version_constraint: "true"
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: Surge_{{trimV .Version}}_{{.OS}}_{{.Arch}}.{{.Format}}
+        format: tar.gz
+        checksum:
+          type: github_release
+          asset: Surge_{{trimV .Version}}_checksums.txt
+          algorithm: sha256
+        overrides:
+          - goos: windows
+            format: zip
+  - type: github_release
     repo_owner: TaKO8Ki
     repo_name: frum
     asset: frum-{{.Version}}-{{.Arch}}-{{.OS}}.tar.gz
@@ -12556,10 +12597,24 @@ packages:
               linux: unknown-linux-gnu
           - goos: windows
             format: zip
+      - version_constraint: semver("<= 0.5.6")
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: mise-completions-sync-{{.Arch}}-{{.OS}}.{{.Format}}
+        format: tar.gz
+        replacements:
+          amd64: x86_64
+          arm64: aarch64
+          darwin: apple-darwin
+          linux: unknown-linux-gnu
+        supported_envs:
+          - linux
+          - darwin
       - version_constraint: "true"
         url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
         asset: mise-completions-sync-{{.Arch}}-{{.OS}}.{{.Format}}
         format: tar.gz
+        files:
+          - name: misecompsync
         replacements:
           amd64: x86_64
           arm64: aarch64
@@ -16972,7 +17027,7 @@ packages:
             format: zip
             files:
               - name: uv
-      - version_constraint: semver("<= 0.9.7") || Version == "0.9.11"
+      - version_constraint: semver("<= 0.9.7") || Version in ["0.9.11", "0.11.9"]
         url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
         asset: uv-{{.Arch}}-{{.OS}}.{{.Format}}
         format: tar.gz
@@ -47378,7 +47433,7 @@ packages:
         overrides:
           - goos: windows
             asset: terragrunt_{{.OS}}_{{.Arch}}.exe.{{.Format}}
-      - version_constraint: "true"
+      - version_constraint: semver("<= 1.0.3")
         url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
         asset: terragrunt_{{.OS}}_{{.Arch}}.{{.Format}}
         format: tar.gz
@@ -47396,6 +47451,31 @@ packages:
               - https://github.com/gruntwork-io/terragrunt/releases/download/{{.Version}}/SHA256SUMS.pem
               - --certificate-identity-regexp
               - "^https://github\\.com/gruntwork-io/terragrunt/\\.github/workflows/.+\\.ya?ml@refs/tags/\\Q{{.Version}}\\E$"
+              - --certificate-oidc-issuer
+              - https://token.actions.githubusercontent.com
+              - --signature
+              - https://github.com/gruntwork-io/terragrunt/releases/download/{{.Version}}/SHA256SUMS.sig
+        overrides:
+          - goos: windows
+            asset: terragrunt_{{.OS}}_{{.Arch}}.exe.{{.Format}}
+      - version_constraint: "true"
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: terragrunt_{{.OS}}_{{.Arch}}.{{.Format}}
+        format: tar.gz
+        windows_arm_emulation: true
+        files:
+          - name: terragrunt
+            src: "{{.AssetWithoutExt}}"
+        checksum:
+          type: github_release
+          asset: SHA256SUMS
+          algorithm: sha256
+          cosign:
+            opts:
+              - --certificate
+              - https://github.com/gruntwork-io/terragrunt/releases/download/{{.Version}}/SHA256SUMS.pem
+              - --certificate-identity
+              - https://github.com/gruntwork-io/terragrunt/.github/workflows/release.yml@refs/heads/main
               - --certificate-oidc-issuer
               - https://token.actions.githubusercontent.com
               - --signature
@@ -84637,55 +84717,6 @@ packages:
           asset: sha256sum.txt
           algorithm: sha256
   - type: github_release
-    repo_owner: sigi-cli
-    repo_name: sigi
-    description: Sigi - a tool for organizing
-    version_constraint: "false"
-    version_overrides:
-      - version_constraint: semver("<= 3.6.1")
-        no_asset: true
-      - version_constraint: semver("<= 3.6.3")
-        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
-        asset: sigi_{{.Version}}_{{.Arch}}-{{.OS}}.{{.Format}}
-        format: tar.gz
-        rosetta2: true
-        windows_arm_emulation: true
-        replacements:
-          amd64: x86_64
-          darwin: apple-darwin
-          linux: unknown-linux-musl
-          windows: pc-windows-gnu
-        checksum:
-          type: github_release
-          asset: sigi_{{.Version}}_{{.Arch}}-{{.OS}}.{{.Format}}.sha256sum
-          algorithm: sha256
-        supported_envs:
-          - darwin
-          - windows
-          - amd64
-      - version_constraint: "true"
-        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
-        asset: sigi_{{.Version}}_{{.Arch}}-{{.OS}}.{{.Format}}
-        format: tar.gz
-        windows_arm_emulation: true
-        replacements:
-          amd64: x86_64
-          darwin: apple-darwin
-          linux: unknown-linux-musl
-          windows: pc-windows-gnu
-        checksum:
-          type: github_release
-          asset: sigi_{{.Version}}_{{.Arch}}-{{.OS}}.{{.Format}}.sha256sum
-          algorithm: sha256
-        overrides:
-          - goos: darwin
-            replacements:
-              arm64: aarch64
-        supported_envs:
-          - darwin
-          - windows
-          - amd64
-  - type: github_release
     repo_owner: sigoden
     repo_name: aichat
     description: Use GPT-4(V), Gemini, LocalAI, Ollama and other LLMs in the terminal
@@ -86554,6 +86585,57 @@ packages:
         supported_envs:
           - linux
           - darwin
+  - type: github_release
+    repo_owner: so-dang-cool
+    repo_name: sigi
+    aliases:
+      - name: sigi-cli/sigi
+    description: Sigi - a tool for organizing
+    version_constraint: "false"
+    version_overrides:
+      - version_constraint: semver("<= 3.6.1")
+        no_asset: true
+      - version_constraint: semver("<= 3.6.3")
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: sigi_{{.Version}}_{{.Arch}}-{{.OS}}.{{.Format}}
+        format: tar.gz
+        rosetta2: true
+        windows_arm_emulation: true
+        replacements:
+          amd64: x86_64
+          darwin: apple-darwin
+          linux: unknown-linux-musl
+          windows: pc-windows-gnu
+        checksum:
+          type: github_release
+          asset: sigi_{{.Version}}_{{.Arch}}-{{.OS}}.{{.Format}}.sha256sum
+          algorithm: sha256
+        supported_envs:
+          - darwin
+          - windows
+          - amd64
+      - version_constraint: "true"
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: sigi_{{.Version}}_{{.Arch}}-{{.OS}}.{{.Format}}
+        format: tar.gz
+        windows_arm_emulation: true
+        replacements:
+          amd64: x86_64
+          darwin: apple-darwin
+          linux: unknown-linux-musl
+          windows: pc-windows-gnu
+        checksum:
+          type: github_release
+          asset: sigi_{{.Version}}_{{.Arch}}-{{.OS}}.{{.Format}}.sha256sum
+          algorithm: sha256
+        overrides:
+          - goos: darwin
+            replacements:
+              arm64: aarch64
+        supported_envs:
+          - darwin
+          - windows
+          - amd64
   - type: github_release
     repo_owner: so-dang-cool
     repo_name: yn
