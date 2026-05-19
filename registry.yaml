@@ -328,6 +328,28 @@ packages:
           - linux/amd64
           - windows
   - type: github_release
+    repo_owner: AOMediaCodec
+    repo_name: libavif
+    description: Library for encoding and decoding AVIF files
+    version_constraint: "false"
+    version_overrides:
+      - version_constraint: semver("<= 1.1.1")
+        no_asset: true
+      - version_constraint: "true"
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: "{{.OS}}-artifacts.{{.Format}}"
+        format: zip
+        replacements:
+          darwin: macOS
+        supported_envs:
+          - linux/amd64
+          - darwin/arm64
+          - windows/amd64
+        files:
+          - name: avifenc
+          - name: avifdec
+          - name: avifgainmaputil
+  - type: github_release
     repo_owner: Adembc
     repo_name: lazyssh
     description: "A terminal-based SSH manager inspired by lazydocker and k9s - Written in go"
@@ -13960,7 +13982,7 @@ packages:
     description: A free and open source Java framework for building Semantic Web and Linked Data applications (CLI tools)
     version_source: github_tag
     version_prefix: jena-
-    version_filter: Version matches "^jena-\\d+"
+    version_filter: Version matches "^jena-\\d+\\.\\d+\\.\\d+$"
     files:
       - name: arq
         src: apache-jena-{{.SemVer}}/bin/arq
@@ -14083,6 +14105,8 @@ packages:
             src: apache-jena-{{.SemVer}}/bat/tdbdump.bat
     version_constraint: "false"
     version_overrides:
+      - version_constraint: semver("< 3.13.0")
+        error_message: apache/jena is supported from jena-3.13.0 because older archives use different command sets or checksum files
       - version_constraint: "true"
         url: https://archive.apache.org/dist/jena/binaries/apache-jena-{{.SemVer}}.tar.gz
         format: tgz
@@ -100610,9 +100634,31 @@ packages:
     repo_owner: wasmCloud
     repo_name: wasmCloud
     description: wasmCloud is an open source Cloud Native Computing Foundation (CNCF) project that enables teams to build, manage, and scale polyglot apps across any cloud, K8s, or edge
-    version_prefix: wash-v
     version_constraint: "false"
     version_overrides:
+      - version_constraint: semver("< 2.0.0")
+        version_prefix: wash-v
+        asset: wash-{{.Arch}}-{{.OS}}
+        format: raw
+        windows_arm_emulation: true
+        replacements:
+          amd64: x86_64
+          arm64: aarch64
+          darwin: apple-darwin
+          linux: unknown-linux-musl
+          windows: pc-windows-msvc
+      - version_constraint: semver("<= 2.0.1")
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: wash-{{.Arch}}-{{.OS}}
+        format: raw
+        windows_arm_emulation: true
+        complete_windows_ext: false
+        replacements:
+          amd64: x86_64
+          arm64: aarch64
+          darwin: apple-darwin
+          linux: unknown-linux-musl
+          windows: pc-windows-msvc
       - version_constraint: "true"
         url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
         asset: wash-{{.Arch}}-{{.OS}}
@@ -100624,6 +100670,10 @@ packages:
           darwin: apple-darwin
           linux: unknown-linux-musl
           windows: pc-windows-msvc
+        overrides:
+          - goos: windows
+            format: zip
+            asset: wash-{{.Arch}}-{{.OS}}.{{.Format}}
   - type: github_release
     repo_owner: wasmerio
     repo_name: wapm-cli
