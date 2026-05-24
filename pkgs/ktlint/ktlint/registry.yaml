@@ -1,8 +1,10 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/aquaproj/aqua/main/json-schema/registry.json
 packages:
   - type: github_release
-    repo_owner: pinterest
+    repo_owner: ktlint
     repo_name: ktlint
+    aliases:
+      - name: pinterest/ktlint
     description: An anti-bikeshedding Kotlin linter with built-in formatter
     version_constraint: "false"
     version_overrides:
@@ -10,7 +12,7 @@ packages:
         complete_windows_ext: false
         asset: ktlint
       - version_constraint: "true"
-        url: https://gh-proxy.org/https://github.com/pinterest/ktlint/releases/download/{{.Version}}/{{.Asset}}
+        url: https://gh-proxy.org/https://github.com/ktlint/ktlint/releases/download/{{.Version}}/{{.Asset}}
         asset: "ktlint-{{.Version}}.{{.Format}}"
         format: zip
         files:
