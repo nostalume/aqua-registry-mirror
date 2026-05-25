@@ -27965,6 +27965,17 @@ packages:
         overrides:
           - goos: linux
             format: tar
+      - version_constraint: semver("< 2.33.0")
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: coder_{{trimV .Version}}_{{.OS}}_{{.Arch}}.{{.Format}}
+        format: zip
+        checksum:
+          type: github_release
+          asset: coder_{{trimV .Version}}_checksums.txt
+          algorithm: sha256
+        overrides:
+          - goos: linux
+            format: tar.gz
       - version_constraint: "true"
         url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
         asset: coder_{{trimV .Version}}_{{.OS}}_{{.Arch}}.{{.Format}}
@@ -27976,6 +27987,8 @@ packages:
         overrides:
           - goos: linux
             format: tar.gz
+        github_artifact_attestations:
+          signer_workflow: coder/coder/\.github/workflows/release\.yaml
   - type: github_release
     repo_owner: coder3101
     repo_name: protols
@@ -38970,6 +38983,47 @@ packages:
         checksum:
           type: github_release
           asset: checksums.txt
+          algorithm: sha256
+        overrides:
+          - goos: windows
+            format: zip
+  - type: github_release
+    repo_owner: felixgwilliams
+    repo_name: nbwipers
+    description: nbwipers is a command line tool to wipe clean jupyter notebooks, written in Rust
+    version_constraint: "false"
+    version_overrides:
+      - version_constraint: semver("<= 0.3.6")
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: nbwipers-{{.Arch}}-{{.OS}}.{{.Format}}
+        format: tar.gz
+        replacements:
+          amd64: x86_64
+          arm64: aarch64
+          darwin: apple-darwin
+          linux: unknown-linux-gnu
+          windows: pc-windows-msvc
+        checksum:
+          type: github_release
+          asset: "{{.Asset}}.sha256"
+          algorithm: sha256
+        overrides:
+          - goos: windows
+            format: zip
+      - version_constraint: "true"
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: nbwipers-{{.Arch}}-{{.OS}}.{{.Format}}
+        format: tar.gz
+        windows_arm_emulation: true
+        replacements:
+          amd64: x86_64
+          arm64: aarch64
+          darwin: apple-darwin
+          linux: unknown-linux-gnu
+          windows: pc-windows-msvc
+        checksum:
+          type: github_release
+          asset: "{{.Asset}}.sha256"
           algorithm: sha256
         overrides:
           - goos: windows
