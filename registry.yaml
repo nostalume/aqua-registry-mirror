@@ -31907,6 +31907,22 @@ packages:
       algorithm: sha256
   - type: github_release
     repo_owner: databricks
+    repo_name: cli
+    description: Databricks CLI
+    files:
+      - name: databricks
+    version_constraint: "false"
+    version_overrides:
+      - version_constraint: "true"
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: databricks_cli_{{trimV .Version}}_{{.OS}}_{{.Arch}}.{{.Format}}
+        format: tar.gz
+        checksum:
+          type: github_release
+          asset: databricks_cli_{{trimV .Version}}_SHA256SUMS
+          algorithm: sha256
+  - type: github_release
+    repo_owner: databricks
     repo_name: click
     description: The "Command Line Interactive Controller for Kubernetes"
     version_constraint: "false"
@@ -43035,6 +43051,8 @@ packages:
               - https://token.actions.githubusercontent.com
               - --certificate-identity
               - "https://github.com/gittuf/gittuf/.github/workflows/release.yml@refs/tags/{{.Version}}"
+        github_artifact_attestations:
+          signer_workflow: gittuf/gittuf/\.github/workflows/release\.yml
   - type: github_release
     repo_owner: gitui-org
     repo_name: gitui
@@ -53048,6 +53066,10 @@ packages:
         supported_envs:
           - linux
           - darwin
+        checksum:
+          type: github_release
+          asset: SHASUMS512.txt
+          algorithm: sha512
       - version_constraint: semver("<= 2024.0.0")
         url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
         asset: rtx-{{.Version}}-{{.OS}}-{{.Arch}}.{{.Format}}
@@ -53064,6 +53086,30 @@ packages:
         supported_envs:
           - linux
           - darwin
+        checksum:
+          type: github_release
+          asset: SHASUMS512.txt
+          algorithm: sha512
+      - version_constraint: semver("<= 2024.12.17")
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: mise-{{.Version}}-{{.OS}}-{{.Arch}}-musl.{{.Format}}
+        format: tar.gz
+        files:
+          - name: mise
+            src: mise/bin/mise
+        overrides:
+          - goos: darwin
+            asset: mise-{{.Version}}-{{.OS}}-{{.Arch}}.{{.Format}}
+        replacements:
+          amd64: x64
+          darwin: macos
+        supported_envs:
+          - linux
+          - darwin
+        checksum:
+          type: github_release
+          asset: SHASUMS512.txt
+          algorithm: sha512
       - version_constraint: semver(">= 2025.7.13, <= 2025.7.15")
         no_asset: true
       - version_constraint: semver("<= 2025.8.21")
@@ -53082,6 +53128,15 @@ packages:
         supported_envs:
           - linux
           - darwin
+        checksum:
+          type: github_release
+          asset: SHASUMS512.txt
+          algorithm: sha512
+          minisign:
+            type: github_release
+            asset: SHASUMS512.txt.minisig
+            # https://github.com/jdx/mise/blob/main/minisign.pub
+            public_key: RWTC3g8W3z4RZK3V3qv7fa1QY4JEWyBtqIHW+85QlJpZc5yG+uNYNBSZ
       - version_constraint: "true"
         url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
         asset: mise-{{.Version}}-{{.OS}}-{{.Arch}}-musl.{{.Format}}
@@ -53100,6 +53155,15 @@ packages:
           - darwin
         github_immutable_release: true
         github_release_attestations: true
+        checksum:
+          type: github_release
+          asset: SHASUMS512.txt
+          algorithm: sha512
+          minisign:
+            type: github_release
+            asset: SHASUMS512.txt.minisig
+            # https://github.com/jdx/mise/blob/main/minisign.pub
+            public_key: RWTC3g8W3z4RZK3V3qv7fa1QY4JEWyBtqIHW+85QlJpZc5yG+uNYNBSZ
   - type: github_release
     repo_owner: jdx
     repo_name: usage
