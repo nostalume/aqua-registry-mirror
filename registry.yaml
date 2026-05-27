@@ -1056,6 +1056,50 @@ packages:
           - windows
   - type: github_release
     repo_owner: Bearer
+    repo_name: bearer
+    description: Code security scanning tool (SAST) to discover, filter and prioritize security and privacy risks
+    version_constraint: "false"
+    version_overrides:
+      - version_constraint: semver("<= 0.24.0")
+        no_asset: true
+      - version_constraint: semver("<= 1.43.4")
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: bearer_{{trimV .Version}}_{{.OS}}_{{.Arch}}.{{.Format}}
+        format: tar.gz
+        checksum:
+          type: github_release
+          asset: checksums.txt
+          algorithm: sha256
+        overrides:
+          - goos: linux
+            format: tar.zst
+            asset: bearer_{{trimV .Version}}_{{.OS}}-{{.Arch}}.pkg.{{.Format}}
+            files:
+              - name: bearer
+                src: usr/bin/bearer
+        supported_envs:
+          - linux/amd64
+          - darwin
+      - version_constraint: "true"
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: bearer_{{trimV .Version}}_{{.OS}}_{{.Arch}}.{{.Format}}
+        format: tar.gz
+        checksum:
+          type: github_release
+          asset: checksums.txt
+          algorithm: sha256
+        overrides:
+          - goos: linux
+            format: tar.zst
+            asset: bearer_{{trimV .Version}}_{{.OS}}-{{.Arch}}.pkg.{{.Format}}
+            files:
+              - name: bearer
+                src: usr/bin/bearer
+        supported_envs:
+          - linux
+          - darwin
+  - type: github_release
+    repo_owner: Bearer
     repo_name: gon
     description: Sign, notarize, and package macOS CLI tools and applications written in any language. Available as both a CLI and a Go library
     version_constraint: "false"
@@ -53258,6 +53302,10 @@ packages:
           darwin: osx
         supported_envs:
           - darwin
+        minisign:
+          type: github_release
+          asset: "{{.Asset}}.minisig"
+          public_key: RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3
       - version_constraint: Version == "0.4"
         no_asset: true
       - version_constraint: semver("<= 0.8")
@@ -53269,6 +53317,10 @@ packages:
           darwin: osx
         supported_envs:
           - darwin
+        minisign:
+          type: github_release
+          asset: "{{.Asset}}.minisig"
+          public_key: RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3
       - version_constraint: Version == "0.9"
         url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
         asset: minisign-{{.OS}}.{{.Format}}
@@ -53282,6 +53334,10 @@ packages:
         supported_envs:
           - darwin
           - windows/amd64
+        minisign:
+          type: github_release
+          asset: "{{.Asset}}.minisig"
+          public_key: RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3
       - version_constraint: Version in ["0.10", "0.11"]
         url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
         asset: minisign-{{.Version}}-{{.OS}}.{{.Format}}
@@ -53302,11 +53358,15 @@ packages:
           - goos: windows
             files:
               - name: minisign
-                src: minisign-win64/minisign.exe
+                src: minisign-win64/minisign
         supported_envs:
           - darwin
           - windows
           - amd64
+        minisign:
+          type: github_release
+          asset: "{{.Asset}}.minisig"
+          public_key: RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3
       - version_constraint: "true"
         url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
         asset: minisign-{{.Version}}-{{.OS}}.{{.Format}}
@@ -53330,6 +53390,10 @@ packages:
           - darwin/arm64
           - windows
           - linux/amd64
+        minisign:
+          type: github_release
+          asset: "{{.Asset}}.minisig"
+          public_key: RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3
   - type: github_release
     repo_owner: jedisct1
     repo_name: piknik
@@ -66924,6 +66988,10 @@ packages:
       type: http
       algorithm: sha256
       url: https://dl.min.io/client/mc/release/{{.OS}}-{{.Arch}}/archive/mc.{{.Version}}.sha256sum
+    minisign:
+      type: http
+      url: https://dl.min.io/client/mc/release/{{.OS}}-{{.Arch}}/archive/mc.{{.Version}}.minisig
+      public_key: RWTx5Zr1tiHQLwG9keckT0c45M3AGeHD6IvimQHpyRywVWGbP1aVSGav
   - type: github_release
     repo_owner: miniscruff
     repo_name: changie
@@ -102312,6 +102380,19 @@ packages:
     files:
       - name: gobump
         src: gobump_{{.Version}}_{{.OS}}_{{.Arch}}/gobump
+  - type: http
+    name: x.ai/cli/grok
+    link: https://x.ai/cli
+    description: Grok Build TUI
+    format: raw
+    url: https://storage.googleapis.com/grok-build-public-artifacts/cli/grok-{{.Version}}-{{.OS}}-{{.Arch}}
+    files:
+      - name: grok
+      - name: agent
+    replacements:
+      darwin: macos
+      amd64: x86_64
+      arm64: aarch64
   - type: github_release
     repo_owner: xataio
     repo_name: pgroll
