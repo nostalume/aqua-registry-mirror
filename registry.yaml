@@ -31728,6 +31728,57 @@ packages:
             format: zip
   - type: github_release
     repo_owner: dahlia
+    repo_name: seonbi
+    description: SmartyPants for Korean language
+    version_constraint: "false"
+    version_overrides:
+      - version_constraint: semver("<= 0.2.3")
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: seonbi-{{.Version}}.{{.OS}}-{{.Arch}}.{{.Format}}
+        format: tar.bz2
+        rosetta2: true
+        replacements:
+          amd64: x86_64
+          darwin: macos
+          windows: win64
+        overrides:
+          - goos: windows
+            format: zip
+            asset: seonbi-{{.Version}}.{{.OS}}.{{.Format}}
+        supported_envs:
+          - darwin
+          - windows
+          - amd64
+      - version_constraint: semver("<= 0.4.0")
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: seonbi-{{.Version}}.{{.OS}}-{{.Arch}}.{{.Format}}
+        format: tar.bz2
+        replacements:
+          amd64: x86_64
+          darwin: macos
+          windows: win64
+        overrides:
+          - goos: windows
+            format: zip
+            asset: seonbi-{{.Version}}.{{.OS}}.{{.Format}}
+        supported_envs:
+          - darwin
+          - windows
+          - amd64
+      - version_constraint: "true"
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: seonbi-{{.Version}}.{{.OS}}-{{.Arch}}.{{.Format}}
+        format: tar.bz2
+        replacements:
+          amd64: x86_64
+          darwin: macos
+          windows: win64
+        overrides:
+          - goos: windows
+            format: zip
+            asset: seonbi-{{.Version}}.{{.OS}}.{{.Format}}
+  - type: github_release
+    repo_owner: dahlia
     repo_name: submark
     description: Extract a part from CommonMark/Markdown docs
     version_constraint: "false"
@@ -75152,6 +75203,61 @@ packages:
       type: github_release
       asset: checksums.txt
       algorithm: sha256
+  - name: oxc-project/oxc/oxfmt
+    type: github_release
+    repo_owner: oxc-project
+    repo_name: oxc
+    description: A collection of high-performance JavaScript tools
+    version_filter: Version matches "^apps_v"
+    version_prefix: apps_v
+    files:
+      - name: oxfmt
+        src: "{{.AssetWithoutExt}}"
+    version_constraint: "false"
+    version_overrides:
+      - version_constraint: semver("<= 1.43.0")
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: oxfmt-{{.OS}}-{{.Arch}}-gnu.{{.Format}}
+        format: tar.gz
+        replacements:
+          amd64: x64
+          windows: win32
+        overrides:
+          - goos: darwin
+            asset: oxfmt-{{.OS}}-{{.Arch}}.{{.Format}}
+          - goos: windows
+            format: zip
+            asset: oxfmt-{{.OS}}-{{.Arch}}.{{.Format}}
+      - version_constraint: semver("= 1.47.0")
+        no_asset: true
+      - version_constraint: semver("<= 1.51.0")
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: oxfmt-{{.Arch}}-{{.OS}}.{{.Format}}
+        format: tar.gz
+        replacements:
+          amd64: x86_64
+          arm64: aarch64
+          darwin: apple-darwin
+          linux: unknown-linux-musl
+          windows: pc-windows-msvc
+        overrides:
+          - goos: windows
+            format: zip
+      - version_constraint: semver("<= 1.53.0")
+        no_asset: true
+      - version_constraint: "true"
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: oxfmt-{{.Arch}}-{{.OS}}.{{.Format}}
+        format: tar.gz
+        replacements:
+          amd64: x86_64
+          arm64: aarch64
+          darwin: apple-darwin
+          linux: unknown-linux-musl
+          windows: pc-windows-msvc
+        overrides:
+          - goos: windows
+            format: zip
   - type: github_release
     name: oxc-project/oxc/oxlint
     repo_owner: oxc-project
@@ -83862,7 +83968,7 @@ packages:
     version_overrides:
       - version_constraint: Version in ["v0.1.1", "v0.2.3"]
         no_asset: true
-      - version_constraint: "true"
+      - version_constraint: semver("<= 0.6.2")
         url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
         asset: jf-{{.Arch}}-{{.OS}}.{{.Format}}
         format: tar.gz
@@ -83880,6 +83986,26 @@ packages:
           - darwin
           - windows
           - amd64
+      - version_constraint: "true"
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: jf-{{.Arch}}-{{.OS}}.{{.Format}}
+        format: tar.gz
+        replacements:
+          amd64: x86_64
+          arm64: aarch64
+          darwin: apple-darwin
+          linux: unknown-linux-musl
+          windows: pc-windows-msvc
+        overrides:
+          - goos: darwin
+            replacements:
+              amd64: amd64
+          - goos: windows
+            format: zip
+        supported_envs:
+          - linux
+          - darwin/arm64
+          - windows
   - type: github_release
     repo_owner: sayanarijit
     repo_name: xplr
