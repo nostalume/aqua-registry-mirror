@@ -60,8 +60,6 @@ packages:
         supported_envs:
           - linux
           - darwin
-        github_immutable_release: true
-        github_release_attestations: true
       - version_constraint: "true"
         url: https://gh-proxy.org/https://github.com/jdx/usage/releases/download/{{.Version}}/{{.Asset}}
         asset: usage-{{.Arch}}-{{.OS}}.{{.Format}}
@@ -77,5 +75,3 @@ packages:
             asset: usage-universal-{{.OS}}.{{.Format}}
           - goos: windows
             format: zip
-        github_immutable_release: true
-        github_release_attestations: true

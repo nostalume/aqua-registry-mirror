@@ -89,8 +89,6 @@ packages:
           amd64: x64
           darwin: macos
           windows: win
-        github_immutable_release: true
-        github_release_attestations: true
       - version_constraint: semver("<= 11.0.4")
         url: https://gh-proxy.org/https://github.com/pnpm/pnpm/releases/download/{{.Version}}/{{.Asset}}
         asset: pnpm-{{.OS}}-{{.Arch}}.{{.Format}}
@@ -106,8 +104,6 @@ packages:
         overrides:
           - goos: windows
             format: zip
-        github_immutable_release: true
-        github_release_attestations: true
       - version_constraint: semver("<= 11.0.6")
         url: https://gh-proxy.org/https://github.com/pnpm/pnpm/releases/download/{{.Version}}/{{.Asset}}
         asset: pnpm-{{.OS}}-{{.Arch}}.{{.Format}}
@@ -125,8 +121,6 @@ packages:
             format: zip
         github_artifact_attestations:
           signer_workflow: pnpm/pnpm/\.github/workflows/release\.yml
-        github_immutable_release: true
-        github_release_attestations: true
         supported_envs:
           - linux
           - windows
@@ -156,8 +150,6 @@ packages:
             format: zip
         github_artifact_attestations:
           signer_workflow: pnpm/pnpm/\.github/workflows/release\.yml
-        github_immutable_release: true
-        github_release_attestations: true
         supported_envs:
           - linux
           - windows

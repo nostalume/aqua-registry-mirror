@@ -2561,6 +2561,51 @@ packages:
           - amd64
   - type: github_release
     repo_owner: CycloneDX
+    repo_name: cdxgen
+    description: Creates CycloneDX Bill of Materials (BOM) from source code and container images
+    version_constraint: "false"
+    version_overrides:
+      - version_constraint: semver("< 11.5.0")
+        error_message: The version is too old. Please use a version 11.5.0 or higher.
+      - version_constraint: semver("<= 11.9.0")
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: cdxgen-{{.OS}}-{{.Arch}}
+        format: raw
+        overrides:
+          - goos: linux
+            asset: cdxgen-{{.OS}}-{{.Arch}}-musl
+        checksum:
+          type: github_release
+          asset: "{{.Asset}}.sha256"
+          algorithm: sha256
+      - version_constraint: semver("<= 12.0.0")
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: cdxgen-{{.OS}}-{{.Arch}}
+        format: raw
+        overrides:
+          - goos: linux
+            asset: cdxgen-{{.OS}}-{{.Arch}}-musl
+        checksum:
+          type: github_release
+          asset: "{{.Asset}}.sha256"
+          algorithm: sha256
+        supported_envs:
+          - linux
+          - darwin/arm64
+          - windows
+      - version_constraint: "true"
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: cdxgen-{{.OS}}-{{.Arch}}
+        format: raw
+        overrides:
+          - goos: linux
+            asset: cdxgen-{{.OS}}-{{.Arch}}-musl
+        checksum:
+          type: github_release
+          asset: "{{.Asset}}.sha256"
+          algorithm: sha256
+  - type: github_release
+    repo_owner: CycloneDX
     repo_name: cyclonedx-cli
     description: CycloneDX CLI tool for SBOM analysis, merging, diffs and format conversions
     files:
@@ -8798,8 +8843,6 @@ packages:
         overrides:
           - goos: windows
             format: zip
-        github_immutable_release: true
-        github_release_attestations: true
       - version_constraint: Version == "v3.32.0"
         url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
         asset: upcloud-cli_{{trimV .Version}}_{{.OS}}_{{.Arch}}.{{.Format}}
@@ -8813,8 +8856,6 @@ packages:
         overrides:
           - goos: windows
             format: zip
-        github_immutable_release: true
-        github_release_attestations: true
       - version_constraint: "true"
         url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
         asset: upcloud-cli_{{trimV .Version}}_{{.OS}}_{{.Arch}}.{{.Format}}
@@ -8830,8 +8871,6 @@ packages:
         overrides:
           - goos: windows
             format: zip
-        github_immutable_release: true
-        github_release_attestations: true
   - type: github_release
     repo_owner: Versent
     repo_name: saml2aws
@@ -14899,7 +14938,7 @@ packages:
         slsa_provenance:
           type: github_release
           asset: multiple.intoto.jsonl
-      - version_constraint: "true"
+      - version_constraint: semver("<= 0.5.4")
         url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
         asset: argd_{{.OS}}_{{.Arch}}.{{.Format}}
         format: tar.gz
@@ -14916,6 +14955,26 @@ packages:
             bundle:
               type: github_release
               asset: argd_checksums.txt.bundle
+        slsa_provenance:
+          type: github_release
+          asset: multiple.intoto.jsonl
+      - version_constraint: "true"
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: argd_{{.OS}}_{{.Arch}}.{{.Format}}
+        format: tar.gz
+        checksum:
+          type: github_release
+          asset: argd_checksums.txt
+          algorithm: sha256
+          cosign:
+            bundle:
+              type: github_release
+              asset: argd_checksums.txt.sigstore.json
+            opts:
+              - --certificate-identity-regexp
+              - "https://github\\.com/suzuki-shunsuke/go-release-workflow/\\.github/workflows/release\\.yaml@.*"
+              - --certificate-oidc-issuer
+              - "https://token.actions.githubusercontent.com"
         slsa_provenance:
           type: github_release
           asset: multiple.intoto.jsonl
@@ -36146,8 +36205,6 @@ packages:
           type: github_release
           asset: SHASUMS256.txt
           algorithm: sha256
-        github_immutable_release: true
-        github_release_attestations: true
   - type: github_release
     repo_owner: drlau
     repo_name: akashi
@@ -49192,18 +49249,16 @@ packages:
     repo_name: ghcup-hs
     url: https://downloads.haskell.org/~ghcup/{{trimV .Version}}/{{.Arch}}-{{.OS}}-ghcup-{{trimV .Version}}
     format: raw
+    windows_arm_emulation: true
     link: https://www.haskell.org/ghcup/
     description: GHCup is an installer for the general purpose language Haskell
     replacements:
       arm64: aarch64
       amd64: x86_64
       darwin: apple-darwin
+      windows: mingw64
     files:
       - name: ghcup
-        src: "{{.Arch}}-{{.OS}}-ghcup-{{trimV .Version}}"
-    supported_envs:
-      - linux
-      - darwin
   - type: github_release
     repo_owner: hasura
     repo_name: graphql-engine
@@ -52949,8 +53004,6 @@ packages:
             format: zip
             files:
               - name: prek
-        github_immutable_release: true
-        github_release_attestations: true
       - version_constraint: "true"
         url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
         asset: prek-{{.Arch}}-{{.OS}}.{{.Format}}
@@ -52975,8 +53028,6 @@ packages:
               - name: prek
         github_artifact_attestations:
           signer_workflow: j178/prek/.github/workflows/release.yml
-        github_immutable_release: true
-        github_release_attestations: true
   - type: github_release
     repo_owner: jacek-kurlit
     repo_name: pik
@@ -53474,8 +53525,6 @@ packages:
           - linux
           - darwin/arm64
           - windows
-        github_immutable_release: true
-        github_release_attestations: true
   - type: github_release
     repo_owner: jdx
     repo_name: mise
@@ -53585,8 +53634,6 @@ packages:
         supported_envs:
           - linux
           - darwin
-        github_immutable_release: true
-        github_release_attestations: true
         checksum:
           type: github_release
           asset: SHASUMS512.txt
@@ -53701,8 +53748,6 @@ packages:
         supported_envs:
           - linux
           - darwin
-        github_immutable_release: true
-        github_release_attestations: true
       - version_constraint: "true"
         url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
         asset: usage-{{.Arch}}-{{.OS}}.{{.Format}}
@@ -53718,8 +53763,6 @@ packages:
             asset: usage-universal-{{.OS}}.{{.Format}}
           - goos: windows
             format: zip
-        github_immutable_release: true
-        github_release_attestations: true
   - type: github_release
     repo_owner: jedisct1
     repo_name: minisign
@@ -77758,8 +77801,6 @@ packages:
           amd64: x64
           darwin: macos
           windows: win
-        github_immutable_release: true
-        github_release_attestations: true
       - version_constraint: semver("<= 11.0.4")
         url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
         asset: pnpm-{{.OS}}-{{.Arch}}.{{.Format}}
@@ -77775,8 +77816,6 @@ packages:
         overrides:
           - goos: windows
             format: zip
-        github_immutable_release: true
-        github_release_attestations: true
       - version_constraint: semver("<= 11.0.6")
         url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
         asset: pnpm-{{.OS}}-{{.Arch}}.{{.Format}}
@@ -77794,8 +77833,6 @@ packages:
             format: zip
         github_artifact_attestations:
           signer_workflow: pnpm/pnpm/\.github/workflows/release\.yml
-        github_immutable_release: true
-        github_release_attestations: true
         supported_envs:
           - linux
           - windows
@@ -77825,8 +77862,6 @@ packages:
             format: zip
         github_artifact_attestations:
           signer_workflow: pnpm/pnpm/\.github/workflows/release\.yml
-        github_immutable_release: true
-        github_release_attestations: true
         supported_envs:
           - linux
           - windows
@@ -81282,8 +81317,6 @@ packages:
     description: reviewdog nightly releases
     asset: reviewdog_{{trimV .Version}}_{{.OS}}_{{.Arch}}.{{.Format}}
     format: tar.gz
-    github_immutable_release: true
-    github_release_attestations: true
     files:
       - name: reviewdog
     replacements:
@@ -91865,8 +91898,6 @@ packages:
         slsa_provenance:
           type: github_release
           asset: multiple.intoto.jsonl
-        github_immutable_release: true
-        github_release_attestations: true
         overrides:
           - goos: windows
             format: zip
@@ -98644,8 +98675,6 @@ packages:
           - goos: windows
             format: zip
             asset: chezmoi_{{trimV .Version}}_{{.OS}}_{{.Arch}}.{{.Format}}
-        github_immutable_release: true
-        github_release_attestations: true
       - version_constraint: semver("<= 2.68.1")
         url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
         asset: chezmoi_{{trimV .Version}}_{{.OS}}-glibc_{{.Arch}}.{{.Format}}
@@ -98674,8 +98703,6 @@ packages:
           - goos: windows
             format: zip
             asset: chezmoi_{{trimV .Version}}_{{.OS}}_{{.Arch}}.{{.Format}}
-        github_immutable_release: true
-        github_release_attestations: true
       - version_constraint: "true"
         url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
         asset: chezmoi_{{trimV .Version}}_{{.OS}}_{{.Arch}}.{{.Format}}
@@ -98693,8 +98720,6 @@ packages:
         overrides:
           - goos: windows
             format: zip
-        github_immutable_release: true
-        github_release_attestations: true
   - type: github_release
     repo_owner: txn2
     repo_name: kubefwd
