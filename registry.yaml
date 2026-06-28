@@ -10917,6 +10917,43 @@ packages:
           - goos: windows
             asset: envsubst
   - type: github_release
+    repo_owner: aaif-goose
+    repo_name: goose
+    aliases:
+      - name: block/goose
+    description: "an open source, extensible AI agent that goes beyond code suggestions - install, execute, edit, and test with any LLM"
+    version_constraint: "false"
+    version_overrides:
+      - version_constraint: semver("< 1.0.0")
+        error_message: |
+          Please use a version later than v1.0.
+      - version_constraint: semver("<= 1.29.1")
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: goose-{{.Arch}}-{{.OS}}.{{.Format}}
+        format: tar.bz2
+        replacements:
+          amd64: x86_64
+          arm64: aarch64
+          darwin: apple-darwin
+          linux: unknown-linux-gnu
+        supported_envs:
+          - linux
+          - darwin
+      - version_constraint: "true"
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: goose-{{.Arch}}-{{.OS}}.{{.Format}}
+        format: tar.bz2
+        replacements:
+          amd64: x86_64
+          arm64: aarch64
+          darwin: apple-darwin
+          linux: unknown-linux-gnu
+        supported_envs:
+          - linux
+          - darwin
+        github_artifact_attestations:
+          signer_workflow: aaif-goose/goose/.github/workflows/release.yml
+  - type: github_release
     name: aakso/ssh-inscribe/sshi
     repo_owner: aakso
     repo_name: ssh-inscribe
@@ -21110,41 +21147,6 @@ packages:
             files:
               - name: blender
                 src: Blender.app/Contents/MacOS/Blender
-  - type: github_release
-    repo_owner: block
-    repo_name: goose
-    description: "an open source, extensible AI agent that goes beyond code suggestions - install, execute, edit, and test with any LLM"
-    version_constraint: "false"
-    version_overrides:
-      - version_constraint: semver("< 1.0.0")
-        error_message: |
-          Please use a version later than v1.0.
-      - version_constraint: semver("<= 1.25.0")
-        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
-        asset: goose-{{.Arch}}-{{.OS}}.{{.Format}}
-        format: tar.bz2
-        replacements:
-          amd64: x86_64
-          arm64: aarch64
-          darwin: apple-darwin
-          linux: unknown-linux-gnu
-        supported_envs:
-          - linux
-          - darwin
-      - version_constraint: "true"
-        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
-        asset: goose-{{.Arch}}-{{.OS}}.{{.Format}}
-        format: tar.bz2
-        replacements:
-          amd64: x86_64
-          arm64: aarch64
-          darwin: apple-darwin
-          linux: unknown-linux-gnu
-        supported_envs:
-          - linux
-          - darwin
-        github_artifact_attestations:
-          signer_workflow: block/goose/.github/workflows/release.yml
   - type: github_release
     repo_owner: blopker
     repo_name: codebook
@@ -70310,6 +70312,18 @@ packages:
         overrides:
           - goos: windows
             format: zip
+  - type: go_install
+    repo_owner: mxschmitt
+    repo_name: playwright-go
+    aliases:
+      - name: playwright-community/playwright-go
+    description: Playwright for Go a browser automation library to control Chromium, Firefox and WebKit with a single API
+    files:
+      - name: playwright
+    version_constraint: "false"
+    version_overrides:
+      - version_constraint: "true"
+        path: github.com/playwright-community/playwright-go/cmd/playwright
   - type: github_release
     repo_owner: nabeken
     repo_name: go-github-apps
@@ -77937,16 +77951,6 @@ packages:
       type: github_release
       asset: pscale_{{trimV .Version}}_checksums.txt
       algorithm: sha256
-  - type: go_install
-    repo_owner: playwright-community
-    repo_name: playwright-go
-    description: Playwright for Go a browser automation library to control Chromium, Firefox and WebKit with a single API
-    files:
-      - name: playwright
-    version_constraint: "false"
-    version_overrides:
-      - version_constraint: "true"
-        path: github.com/playwright-community/playwright-go/cmd/playwright
   - type: github_release
     repo_owner: plexsystems
     repo_name: sinker
@@ -94299,7 +94303,14 @@ packages:
           algorithm: sha256
         overrides:
           - goos: linux
+            variants:
+              - key: libc
+                value: glibc
+          - goos: linux
             asset: tailwindcss-{{.OS}}-{{.Arch}}-musl
+            variants:
+              - key: libc
+                value: musl
   - type: github_release
     repo_owner: tak848
     repo_name: ccgate
