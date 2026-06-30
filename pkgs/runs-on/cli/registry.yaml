@@ -32,7 +32,7 @@ packages:
         supported_envs:
           - linux
           - darwin
-      - version_constraint: semver("<= 2.12.6")
+      - version_constraint: semver("< 3.0.0")
         url: https://gh-proxy.org/https://github.com/runs-on/cli/releases/download/{{.Version}}/{{.Asset}}
         asset: roc_{{trimV .Version}}_{{.OS}}_{{.Arch}}
         format: raw
