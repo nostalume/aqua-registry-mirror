@@ -6086,6 +6086,35 @@ packages:
           asset: checksums.txt
           algorithm: sha256
   - type: github_release
+    repo_owner: Mic92
+    repo_name: nixfmt-rs
+    description: Rust reimplementation of nixfmt with byte-identical output
+    files:
+      - name: nixfmt
+    version_constraint: "false"
+    version_overrides:
+      - version_constraint: Version == "0.1.1"
+        no_asset: true
+      - version_constraint: "true"
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: nixfmt-{{.Arch}}-{{.OS}}
+        format: raw
+        replacements:
+          arm64: aarch64
+        checksum:
+          type: github_release
+          asset: SHA256SUMS
+          algorithm: sha256
+        overrides:
+          - goos: linux
+            replacements:
+              amd64: x86_64
+        github_artifact_attestations:
+          signer_workflow: Mic92/nixfmt-rs/.github/workflows/release-assets.yml
+        supported_envs:
+          - linux
+          - darwin/arm64
+  - type: github_release
     repo_owner: Mikescher
     repo_name: better-docker-ps
     description: Because `docker ps` is annoying and does not fit my monitor/terminal width
@@ -12919,6 +12948,14 @@ packages:
         supported_envs:
           - linux
           - darwin
+      - version_constraint: semver("<= 1.6.4")
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: opencodereview-{{.OS}}-{{.Arch}}
+        format: raw
+        checksum:
+          type: github_release
+          asset: sha256sum.txt
+          algorithm: sha256
       - version_constraint: "true"
         url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
         asset: opencodereview-{{.OS}}-{{.Arch}}
@@ -12927,6 +12964,8 @@ packages:
           type: github_release
           asset: sha256sum.txt
           algorithm: sha256
+        github_artifact_attestations:
+          signer_workflow: alibaba/open-code-review/.github/workflows/release.yml
   - type: github_release
     repo_owner: allero-io
     repo_name: allero
@@ -28520,6 +28559,50 @@ packages:
         url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
         asset: bombardier-{{.OS}}-{{.Arch}}
         format: raw
+  - type: github_release
+    repo_owner: colbymchenry
+    repo_name: codegraph
+    description: Pre-indexed code knowledge graph for coding agents
+    version_constraint: "false"
+    version_overrides:
+      - version_constraint: semver("<= 0.8.0")
+        no_asset: true
+      - version_constraint: semver("<= 0.9.3")
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: codegraph-{{.OS}}-{{.Arch}}.{{.Format}}
+        format: tar.gz
+        files:
+          - name: codegraph
+            src: "{{.AssetWithoutExt}}/bin/codegraph"
+        replacements:
+          amd64: x64
+          windows: win32
+        overrides:
+          - goos: windows
+            format: zip
+            files:
+              - name: codegraph
+                src: "{{.AssetWithoutExt}}/bin/codegraph.cmd"
+      - version_constraint: "true"
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: codegraph-{{.OS}}-{{.Arch}}.{{.Format}}
+        format: tar.gz
+        files:
+          - name: codegraph
+            src: "{{.AssetWithoutExt}}/bin/codegraph"
+        replacements:
+          amd64: x64
+          windows: win32
+        checksum:
+          type: github_release
+          asset: SHA256SUMS
+          algorithm: sha256
+        overrides:
+          - goos: windows
+            format: zip
+            files:
+              - name: codegraph
+                src: "{{.AssetWithoutExt}}/bin/codegraph.cmd"
   - type: github_release
     repo_owner: commercialhaskell
     repo_name: stack
@@ -58085,6 +58168,23 @@ packages:
         checksum:
           enabled: false
   - type: github_release
+    repo_owner: kayac
+    repo_name: lamvms
+    description: lamvms is a deployment and lifecycle management tool for AWS Lambda MicroVMs
+    version_constraint: "false"
+    version_overrides:
+      - version_constraint: "true"
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: lamvms_{{.Version}}_{{.OS}}_{{.Arch}}.{{.Format}}
+        format: tar.gz
+        checksum:
+          type: github_release
+          asset: checksums.txt
+          algorithm: sha256
+        supported_envs:
+          - linux
+          - darwin
+  - type: github_release
     repo_owner: kcl-lang
     repo_name: cli
     description: The KCL Command Line Interface (CLI)
@@ -62137,6 +62237,14 @@ packages:
           - linux/amd64
           - darwin
           - windows
+      - version_constraint: semver("< 4.0.10")
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: kubescape_{{trimV .Version}}_{{.OS}}_{{.Arch}}.{{.Format}}
+        format: tar.gz
+        checksum:
+          type: github_release
+          asset: checksums.sha256
+          algorithm: sha256
       - version_constraint: "true"
         url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
         asset: kubescape_{{trimV .Version}}_{{.OS}}_{{.Arch}}.{{.Format}}
@@ -62145,6 +62253,8 @@ packages:
           type: github_release
           asset: checksums.sha256
           algorithm: sha256
+        github_artifact_attestations:
+          signer_workflow: kubescape/kubescape/.github/workflows/02-release.yaml
   - type: github_release
     repo_owner: kubeshark
     repo_name: kubeshark
@@ -67252,19 +67362,20 @@ packages:
     link: https://code.visualstudio.com/
     search_words:
       - visual studio code
-    url: https://update.code.visualstudio.com/{{trimV .Version}}/cli-{{.OS}}-{{.Arch}}/stable
-    replacements:
-      windows: win32
-      amd64: x64
-    format: tar.gz
-    append_ext: false
-    overrides:
-      - goos: windows
-        format: zip
-    version_constraint: semver(">= 1.73.0")
+    version_constraint: "false"
     version_overrides:
       - version_constraint: semver("< 1.73.0")
         no_asset: true
+      - version_constraint: "true"
+        url: https://update.code.visualstudio.com/{{trimV .Version}}/cli-{{.OS}}-{{.Arch}}/stable
+        replacements:
+          windows: win32
+          amd64: x64
+        format: zip
+        append_ext: false
+        overrides:
+          - goos: linux
+            format: tar.gz
   - type: github_release
     repo_owner: mike-engel
     repo_name: jwt-cli
@@ -70910,6 +71021,17 @@ packages:
           algorithm: sha256
         supported_envs:
           - linux/amd64
+      - version_constraint: semver("<= 0.24.0")
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: sqly_{{trimV .Version}}_{{.OS}}_{{.Arch}}.{{.Format}}
+        format: tar.gz
+        checksum:
+          type: github_release
+          asset: checksums.txt
+          algorithm: sha256
+        overrides:
+          - goos: windows
+            format: zip
       - version_constraint: "true"
         url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
         asset: sqly_{{trimV .Version}}_{{.OS}}_{{.Arch}}.{{.Format}}
@@ -70918,6 +71040,15 @@ packages:
           type: github_release
           asset: checksums.txt
           algorithm: sha256
+          cosign:
+            bundle:
+              type: github_release
+              asset: checksums.txt.sigstore.json
+            opts:
+              - --certificate-identity
+              - https://github.com/nao1215/sqly/.github/workflows/release.yml@refs/tags/{{.Version}}
+              - --certificate-oidc-issuer
+              - https://token.actions.githubusercontent.com
         overrides:
           - goos: windows
             format: zip
@@ -103441,6 +103572,22 @@ packages:
         supported_envs:
           - linux
           - darwin
+  - type: github_release
+    repo_owner: whisper-sec
+    repo_name: whisper-cli
+    description: Official CLI to give your agent a real, routable Whisper IPv6 identity
+    files:
+      - name: whisper
+    version_constraint: "false"
+    version_overrides:
+      - version_constraint: "true"
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: whisper-{{.OS}}-{{.Arch}}
+        format: raw
+        checksum:
+          type: github_release
+          asset: "{{.Asset}}.sha256"
+          algorithm: sha256
   - type: github_release
     repo_owner: windvalley
     repo_name: gossh
