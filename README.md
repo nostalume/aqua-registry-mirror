@@ -43,7 +43,7 @@ registries:
     ref: v4.486.0 # renovate: depName=aquaproj/aqua-registry
   - name: mirror
     type: github_content
-    repo_owner: lvyuemeng
+    repo_owner: nostalume
     repo_name: aqua-registry-mirror
     ref: mirror-20260322
     path: registry.yaml
@@ -68,7 +68,7 @@ registries:
     ref: semver(">= 3.0.0")
   - name: mirror
     type: github_content  # must match the type in aqua.yaml
-    repo_owner: lvyuemeng
+    repo_owner: nostalume
     repo_name: aqua-registry-mirror
     # ref is optional; omitting it allows any ref
     path: registry.yaml
