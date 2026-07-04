@@ -188,6 +188,14 @@ packages:
           - linux/amd64
           - darwin
           - windows
+      - version_constraint: semver("< 4.0.10")
+        url: https://gh-proxy.org/https://github.com/kubescape/kubescape/releases/download/{{.Version}}/{{.Asset}}
+        asset: kubescape_{{trimV .Version}}_{{.OS}}_{{.Arch}}.{{.Format}}
+        format: tar.gz
+        checksum:
+          type: github_release
+          asset: checksums.sha256
+          algorithm: sha256
       - version_constraint: "true"
         url: https://gh-proxy.org/https://github.com/kubescape/kubescape/releases/download/{{.Version}}/{{.Asset}}
         asset: kubescape_{{trimV .Version}}_{{.OS}}_{{.Arch}}.{{.Format}}
@@ -196,3 +204,5 @@ packages:
           type: github_release
           asset: checksums.sha256
           algorithm: sha256
+        github_artifact_attestations:
+          signer_workflow: kubescape/kubescape/.github/workflows/02-release.yaml

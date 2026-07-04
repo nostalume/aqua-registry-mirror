@@ -15,6 +15,10 @@ packages:
           darwin: osx
         supported_envs:
           - darwin
+        minisign:
+          type: github_release
+          asset: "{{.Asset}}.minisig"
+          public_key: RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3
       - version_constraint: Version == "0.4"
         no_asset: true
       - version_constraint: semver("<= 0.8")
@@ -26,6 +30,10 @@ packages:
           darwin: osx
         supported_envs:
           - darwin
+        minisign:
+          type: github_release
+          asset: "{{.Asset}}.minisig"
+          public_key: RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3
       - version_constraint: Version == "0.9"
         url: https://gh-proxy.org/https://github.com/jedisct1/minisign/releases/download/{{.Version}}/{{.Asset}}
         asset: minisign-{{.OS}}.{{.Format}}
@@ -39,6 +47,10 @@ packages:
         supported_envs:
           - darwin
           - windows/amd64
+        minisign:
+          type: github_release
+          asset: "{{.Asset}}.minisig"
+          public_key: RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3
       - version_constraint: Version in ["0.10", "0.11"]
         url: https://gh-proxy.org/https://github.com/jedisct1/minisign/releases/download/{{.Version}}/{{.Asset}}
         asset: minisign-{{.Version}}-{{.OS}}.{{.Format}}
@@ -59,11 +71,15 @@ packages:
           - goos: windows
             files:
               - name: minisign
-                src: minisign-win64/minisign.exe
+                src: minisign-win64/minisign
         supported_envs:
           - darwin
           - windows
           - amd64
+        minisign:
+          type: github_release
+          asset: "{{.Asset}}.minisig"
+          public_key: RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3
       - version_constraint: "true"
         url: https://gh-proxy.org/https://github.com/jedisct1/minisign/releases/download/{{.Version}}/{{.Asset}}
         asset: minisign-{{.Version}}-{{.OS}}.{{.Format}}
@@ -87,3 +103,7 @@ packages:
           - darwin/arm64
           - windows
           - linux/amd64
+        minisign:
+          type: github_release
+          asset: "{{.Asset}}.minisig"
+          public_key: RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3

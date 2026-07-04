@@ -33,7 +33,7 @@ packages:
           type: github_release
           asset: doggo_{{trimV .Version}}_checksums.txt
           algorithm: sha256
-      - version_constraint: "true"
+      - version_constraint: semver("<= 1.1.7")
         url: https://gh-proxy.org/https://github.com/mr-karan/doggo/releases/download/{{.Version}}/{{.Asset}}
         asset: doggo_{{trimV .Version}}_{{.OS}}_{{.Arch}}.{{.Format}}
         format: tar.gz
@@ -53,3 +53,19 @@ packages:
         overrides:
           - goos: windows
             format: zip
+      - version_constraint: "true"
+        url: https://gh-proxy.org/https://github.com/mr-karan/doggo/releases/download/{{.Version}}/{{.Asset}}
+        asset: doggo-{{.OS}}-{{.Arch}}.{{.Format}}
+        format: tar.gz
+        windows_arm_emulation: true
+        overrides:
+          - goos: windows
+            format: zip
+            replacements: {}
+        replacements:
+          amd64: x86_64
+          arm64: aarch64
+        checksum:
+          type: github_release
+          asset: doggo_{{trimV .Version}}_checksums.txt
+          algorithm: sha256
