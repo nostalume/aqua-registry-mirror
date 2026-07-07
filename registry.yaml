@@ -46739,7 +46739,7 @@ packages:
     version_overrides:
       - version_constraint: semver("<= 0.6.0")
         no_asset: true
-      - version_constraint: "true"
+      - version_constraint: semver("<= 0.9.0")
         url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
         asset: keep-sorted_{{.OS}}
         format: raw
@@ -46747,6 +46747,11 @@ packages:
           - darwin
           - windows
           - amd64
+      - version_constraint: "true"
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: keep-sorted_{{.OS}}_{{.Arch}}
+        format: raw
+        windows_arm_emulation: true
   - type: github_release
     repo_owner: google
     repo_name: mtail
@@ -49550,6 +49555,10 @@ packages:
       windows: mingw64
     files:
       - name: ghcup
+    checksum:
+      type: http
+      url: https://downloads.haskell.org/~ghcup/{{trimV .Version}}/SHA256SUMS
+      algorithm: sha256
   - type: github_release
     repo_owner: hasura
     repo_name: graphql-engine
@@ -63294,7 +63303,7 @@ packages:
         overrides:
           - goos: windows
             format: zip
-      - version_constraint: "true"
+      - version_constraint: semver("< 1.17.2")
         url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
         asset: kyverno-cli_{{.Version}}_{{.OS}}_{{.Arch}}.{{.Format}}
         format: tar.gz
@@ -63314,6 +63323,28 @@ packages:
               - https://token.actions.githubusercontent.com
               - --signature
               - https://github.com/kyverno/kyverno/releases/download/{{.Version}}/checksums.txt.sig
+        overrides:
+          - goos: windows
+            format: zip
+      - version_constraint: "true"
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: kyverno-cli_{{.Version}}_{{.OS}}_{{.Arch}}.{{.Format}}
+        format: tar.gz
+        replacements:
+          amd64: x86_64
+        checksum:
+          type: github_release
+          asset: checksums.txt
+          algorithm: sha256
+          cosign:
+            bundle:
+              type: github_release
+              asset: checksums.txt.sigstore.json
+            opts:
+              - --certificate-identity
+              - https://github.com/kyverno/kyverno/.github/workflows/release.yaml@refs/tags/{{.Version}}
+              - --certificate-oidc-issuer
+              - https://token.actions.githubusercontent.com
         overrides:
           - goos: windows
             format: zip
@@ -73820,7 +73851,7 @@ packages:
         supported_envs:
           - linux
           - darwin
-      - version_constraint: "true"
+      - version_constraint: semver("<= 0.133.0-alpha.1")
         url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
         asset: codex-{{.Arch}}-{{.OS}}.{{.Format}}
         format: zst
@@ -73837,6 +73868,20 @@ packages:
         overrides:
           - goos: windows
             asset: codex-{{.Arch}}-{{.OS}}.exe.{{.Format}}
+      - version_constraint: "true"
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: codex-package-{{.Arch}}-{{.OS}}.{{.Format}}
+        format: tar.gz
+        windows_arm_emulation: true
+        files:
+          - name: codex
+            src: bin/codex
+        replacements:
+          amd64: x86_64
+          arm64: aarch64
+          darwin: apple-darwin
+          linux: unknown-linux-musl
+          windows: pc-windows-msvc
   - type: github_release
     repo_owner: openai
     repo_name: tart
@@ -82900,6 +82945,148 @@ packages:
           type: github_release
           asset: checksums.txt
           algorithm: sha256
+  - type: github_release
+    repo_owner: russellbanks
+    repo_name: Komac
+    description: The Community Manifest Creator for WinGet
+    files:
+      - name: komac
+    version_constraint: "false"
+    version_overrides:
+      - version_constraint: semver("< 2.0.0")
+        error_message: The version is too old. Please upgrade to v2.0.0 or later.
+      - version_constraint: Version == "v2.0.0"
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: KomacPortable-{{.OS}}-nightly-{{.Arch}}.{{.Format}}
+        format: tar.gz
+        files:
+          - name: komac
+            src: KomacPortable-{{.OS}}-nightly-{{.Arch}}
+        replacements:
+          amd64: x64
+          darwin: macos
+        overrides:
+          - goos: windows
+            format: raw
+            asset: KomacPortable-nightly-{{.Arch}}
+      - version_constraint: Version == "v2.0.3"
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: KomacPortable-{{.OS}}-{{trimV .Version}}-{{.Arch}}.{{.Format}}
+        format: tar.gz
+        files:
+          - name: komac
+            src: KomacPortable-{{.OS}}-{{trimV .Version}}-{{.Arch}}
+        replacements:
+          amd64: x64
+          darwin: macos
+        overrides:
+          - goos: windows
+            format: raw
+            asset: KomacPortable-{{trimV .Version}}-{{.Arch}}
+      - version_constraint: Version == "v2.2.1"
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: KomacPortable-{{.OS}}-{{.Arch}}.{{.Format}}
+        format: tar.gz
+        files:
+          - name: komac
+            src: KomacPortable-{{.OS}}-{{.Arch}}
+        replacements:
+          amd64: x64
+          darwin: macos
+        checksum:
+          type: github_release
+          asset: "{{.Asset}}.sha256"
+          algorithm: sha256
+        overrides:
+          - goos: windows
+            format: raw
+            asset: KomacPortable-{{.Arch}}
+        supported_envs:
+          - linux/amd64
+          - darwin
+          - windows
+      - version_constraint: Version == "v2.13.0"
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: komac-{{trimV .Version}}-{{.Arch}}-{{.OS}}.{{.Format}}
+        format: tar.gz
+        replacements:
+          amd64: x86_64
+          arm64: aarch64
+          darwin: apple-darwin
+          linux: unknown-linux-gnu
+          windows: pc-windows-msvc
+        overrides:
+          - goos: windows
+            format: raw
+            asset: komac-{{trimV .Version}}-{{.Arch}}-{{.OS}}
+      - version_constraint: semver("<= 2.0.2")
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: KomacPortable-{{.OS}}-{{.Version}}-{{.Arch}}.{{.Format}}
+        format: tar.gz
+        files:
+          - name: komac
+            src: KomacPortable-{{.OS}}-{{.Version}}-{{.Arch}}
+        replacements:
+          amd64: x64
+          darwin: macos
+        overrides:
+          - goos: windows
+            format: raw
+            asset: KomacPortable-{{.Version}}-{{.Arch}}
+      - version_constraint: semver("<= 2.2.0")
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: KomacPortable-{{.OS}}-{{.Arch}}.{{.Format}}
+        format: tar.gz
+        files:
+          - name: komac
+            src: KomacPortable-{{.OS}}-{{.Arch}}
+        replacements:
+          amd64: x64
+          darwin: macos
+        checksum:
+          type: github_release
+          asset: "{{.Asset}}.sha256"
+          algorithm: sha256
+        overrides:
+          - goos: windows
+            format: raw
+            asset: KomacPortable-{{.Arch}}
+      - version_constraint: semver("<= 2.12.1")
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: komac-{{trimV .Version}}-{{.Arch}}-{{.OS}}.{{.Format}}
+        format: tar.gz
+        replacements:
+          amd64: x86_64
+          arm64: aarch64
+          darwin: apple-darwin
+          linux: unknown-linux-gnu
+          windows: pc-windows-msvc
+        checksum:
+          type: github_release
+          asset: "{{.Asset}}.sha256"
+          algorithm: sha256
+        overrides:
+          - goos: windows
+            format: raw
+            asset: komac-{{trimV .Version}}-{{.Arch}}-{{.OS}}
+      - version_constraint: "true"
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: komac-{{trimV .Version}}-{{.Arch}}-{{.OS}}.{{.Format}}
+        format: tar.gz
+        replacements:
+          amd64: x86_64
+          arm64: aarch64
+          darwin: apple-darwin
+          linux: unknown-linux-gnu
+          windows: pc-windows-msvc
+        checksum:
+          type: github_release
+          asset: SHA256SUMS
+          algorithm: sha256
+        overrides:
+          - goos: windows
+            format: raw
+            asset: komac-{{trimV .Version}}-{{.Arch}}-{{.OS}}
   - type: github_release
     repo_owner: rust-cross
     repo_name: cargo-zigbuild
