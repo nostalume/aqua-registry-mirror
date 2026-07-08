@@ -81,6 +81,24 @@ packages:
             format: zip
             files:
               - name: tombi
+      - version_constraint: semver("< 1.2.0")
+        url: https://gh-proxy.org/https://github.com/tombi-toml/tombi/releases/download/{{.Version}}/{{.Asset}}
+        asset: tombi-cli-{{trimV .Version}}-{{.Arch}}-{{.OS}}.{{.Format}}
+        format: tar.gz
+        files:
+          - name: tombi
+            src: "{{.AssetWithoutExt}}/tombi"
+        replacements:
+          amd64: x86_64
+          arm64: aarch64
+          darwin: apple-darwin
+          linux: unknown-linux-musl
+          windows: pc-windows-msvc
+        overrides:
+          - goos: windows
+            format: zip
+            files:
+              - name: tombi
       - version_constraint: "true"
         url: https://gh-proxy.org/https://github.com/tombi-toml/tombi/releases/download/{{.Version}}/{{.Asset}}
         asset: tombi-cli-{{trimV .Version}}-{{.Arch}}-{{.OS}}.{{.Format}}
@@ -99,3 +117,5 @@ packages:
             format: zip
             files:
               - name: tombi
+        github_artifact_attestations:
+          signer_workflow: tombi-toml/tombi/.github/workflows/release_cli_vscode.yml
