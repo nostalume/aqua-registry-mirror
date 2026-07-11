@@ -25749,6 +25749,26 @@ packages:
         overrides:
           - goos: windows
             format: zip
+      - version_constraint: semver("<= 2.1.1")
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: glow_{{trimV .Version}}_{{.OS}}_{{.Arch}}.{{.Format}}
+        format: tar.gz
+        windows_arm_emulation: true
+        files:
+          - name: glow
+            src: "{{.AssetWithoutExt}}/glow"
+        replacements:
+          amd64: x86_64
+          darwin: Darwin
+          linux: Linux
+          windows: Windows
+        checksum:
+          type: github_release
+          asset: checksums.txt
+          algorithm: sha256
+        overrides:
+          - goos: windows
+            format: zip
       - version_constraint: "true"
         url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
         asset: glow_{{trimV .Version}}_{{.OS}}_{{.Arch}}.{{.Format}}
@@ -25766,6 +25786,15 @@ packages:
           type: github_release
           asset: checksums.txt
           algorithm: sha256
+          cosign:
+            bundle:
+              type: github_release
+              asset: checksums.txt.sigstore.json
+            opts:
+              - --certificate-identity
+              - https://github.com/charmbracelet/meta/.github/workflows/goreleaser.yml@refs/heads/main
+              - --certificate-oidc-issuer
+              - https://token.actions.githubusercontent.com
         overrides:
           - goos: windows
             format: zip
@@ -26008,6 +26037,27 @@ packages:
         overrides:
           - goos: windows
             format: zip
+      - version_constraint: semver("<= 0.10.0")
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: vhs_{{trimV .Version}}_{{.OS}}_{{.Arch}}.{{.Format}}
+        format: tar.gz
+        windows_arm_emulation: true
+        complete_windows_ext: false
+        files:
+          - name: vhs
+            src: "{{.AssetWithoutExt}}/vhs"
+        replacements:
+          amd64: x86_64
+          darwin: Darwin
+          linux: Linux
+          windows: Windows
+        checksum:
+          type: github_release
+          asset: checksums.txt
+          algorithm: sha256
+        overrides:
+          - goos: windows
+            format: zip
       - version_constraint: "true"
         url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
         asset: vhs_{{trimV .Version}}_{{.OS}}_{{.Arch}}.{{.Format}}
@@ -26026,6 +26076,15 @@ packages:
           type: github_release
           asset: checksums.txt
           algorithm: sha256
+          cosign:
+            bundle:
+              type: github_release
+              asset: checksums.txt.sigstore.json
+            opts:
+              - --certificate-identity
+              - https://github.com/charmbracelet/meta/.github/workflows/goreleaser.yml@refs/heads/main
+              - --certificate-oidc-issuer
+              - https://token.actions.githubusercontent.com
         overrides:
           - goos: windows
             format: zip
@@ -35242,7 +35301,7 @@ packages:
           - goos: darwin
             checksum:
               enabled: false # https://github.com/docker/buildx/issues/945
-      - version_constraint: "true"
+      - version_constraint: semver("< 0.31.0")
         url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
         asset: buildx-{{.Version}}.{{.OS}}-{{.Arch}}
         format: raw
@@ -35254,6 +35313,29 @@ packages:
           - goos: darwin
             checksum:
               enabled: false # https://github.com/docker/buildx/issues/945
+      - version_constraint: "true"
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: buildx-{{.Version}}.{{.OS}}-{{.Arch}}
+        format: raw
+        checksum:
+          type: github_release
+          asset: checksums.txt
+          algorithm: sha256
+        cosign:
+          bundle:
+            type: github_release
+            asset: "buildx-{{.Version}}.{{.OS}}-{{.Arch}}.sigstore.json"
+          opts:
+            - --certificate-identity-regexp
+            - "^https://github\\.com/docker/github-builder/\\.github/workflows/bake\\.yml@.+$"
+            - --certificate-oidc-issuer
+            - https://token.actions.githubusercontent.com
+        overrides:
+          - goos: darwin
+            checksum:
+              enabled: false # https://github.com/docker/buildx/issues/945
+            cosign:
+              enabled: false
   - type: github_release
     repo_owner: docker
     repo_name: cagent
@@ -35482,6 +35564,17 @@ packages:
           type: github_release
           asset: checksums.txt
           algorithm: sha256
+      - version_constraint: semver("<= 5.0.2")
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: docker-compose-{{.OS}}-{{.Arch}}
+        format: raw
+        replacements:
+          amd64: x86_64
+          arm64: aarch64
+        checksum:
+          type: github_release
+          asset: "{{.Asset}}.sha256"
+          algorithm: sha256
       - version_constraint: "true"
         url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
         asset: docker-compose-{{.OS}}-{{.Arch}}
@@ -35493,6 +35586,15 @@ packages:
           type: github_release
           asset: "{{.Asset}}.sha256"
           algorithm: sha256
+        cosign:
+          bundle:
+            type: github_release
+            asset: "docker-compose-{{.OS}}-{{.Arch}}.sigstore.json"
+          opts:
+            - --certificate-identity-regexp
+            - "^https://github\\.com/docker/github-builder/\\.github/workflows/bake\\.yml@"
+            - --certificate-oidc-issuer
+            - https://token.actions.githubusercontent.com
   - type: github_release
     repo_owner: docker
     repo_name: hub-tool
@@ -68683,10 +68785,88 @@ packages:
                 src: bin/{{.FileName}}
               - name: buildkitd
                 src: bin/{{.FileName}}
+      - version_constraint: semver("< 0.27.0")
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: buildkit-{{.Version}}.{{.OS}}-{{.Arch}}.{{.Format}}
+        format: tar.gz
+        overrides:
+          - goos: linux
+            goarch: amd64
+            files:
+              - name: buildctl
+                src: bin/{{.FileName}}
+              - name: buildkit-cni-bridge
+                src: bin/{{.FileName}}
+              - name: buildkit-cni-firewall
+                src: bin/{{.FileName}}
+              - name: buildkit-cni-host-local
+                src: bin/{{.FileName}}
+              - name: buildkit-cni-loopback
+                src: bin/{{.FileName}}
+              - name: buildkit-qemu-aarch64
+                src: bin/{{.FileName}}
+              - name: buildkit-qemu-arm
+                src: bin/{{.FileName}}
+              - name: buildkit-qemu-i386
+                src: bin/{{.FileName}}
+              - name: buildkit-qemu-ppc64le
+                src: bin/{{.FileName}}
+              - name: buildkit-qemu-riscv64
+                src: bin/{{.FileName}}
+              - name: buildkit-qemu-s390x
+                src: bin/{{.FileName}}
+              - name: buildkit-runc
+                src: bin/{{.FileName}}
+              - name: buildkitd
+                src: bin/{{.FileName}}
+          - goos: linux
+            goarch: arm64
+            files:
+              - name: buildctl
+                src: bin/{{.FileName}}
+              - name: buildkit-cni-bridge
+                src: bin/{{.FileName}}
+              - name: buildkit-cni-firewall
+                src: bin/{{.FileName}}
+              - name: buildkit-cni-host-local
+                src: bin/{{.FileName}}
+              - name: buildkit-cni-loopback
+                src: bin/{{.FileName}}
+              - name: buildkit-qemu-arm
+                src: bin/{{.FileName}}
+              - name: buildkit-qemu-i386
+                src: bin/{{.FileName}}
+              - name: buildkit-qemu-ppc64le
+                src: bin/{{.FileName}}
+              - name: buildkit-qemu-riscv64
+                src: bin/{{.FileName}}
+              - name: buildkit-qemu-s390x
+                src: bin/{{.FileName}}
+              - name: buildkit-qemu-x86_64
+                src: bin/{{.FileName}}
+              - name: buildkit-runc
+                src: bin/{{.FileName}}
+              - name: buildkitd
+                src: bin/{{.FileName}}
+          - goos: windows
+            files:
+              - name: buildctl
+                src: bin/{{.FileName}}
+              - name: buildkitd
+                src: bin/{{.FileName}}
       - version_constraint: "true"
         url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
         asset: buildkit-{{.Version}}.{{.OS}}-{{.Arch}}.{{.Format}}
         format: tar.gz
+        cosign:
+          bundle:
+            type: github_release
+            asset: "{{.AssetWithoutExt}}.sigstore.json"
+          opts:
+            - --certificate-identity-regexp
+            - "^https://github\\.com/docker/github-builder/\\.github/workflows/bake\\.yml@"
+            - --certificate-oidc-issuer
+            - https://token.actions.githubusercontent.com
         overrides:
           - goos: linux
             goarch: amd64
@@ -69560,10 +69740,10 @@ packages:
     description: Git-like CLI/GUI for AWS Parameter Store / Secrets Manager, Google Cloud Secret Manager, and Azure Key Vault / App Configuration
     version_constraint: "false"
     version_overrides:
-      - version_constraint: semver("< 1.3.0")
+      - version_constraint: semver("< 1.6.1")
         error_message: |
-          suve versions before v1.3.0 are not supported by the aqua registry.
-          The project changed significantly in earlier releases; please use v1.3.0 or later.
+          suve versions before v1.6.1 are not supported by the aqua registry.
+          The project changed significantly in earlier releases; please use v1.6.1 or later.
       - version_constraint: "true"
         url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
         asset: suve_{{trimV .Version}}_{{.OS}}_{{.Arch}}.{{.Format}}
@@ -92388,6 +92568,14 @@ packages:
         supported_envs:
           - linux
           - darwin
+      - version_constraint: semver("< 0.1.4")
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: asciinema-trim_{{.OS}}_{{.Arch}}.{{.Format}}
+        format: tar.gz
+        checksum:
+          type: github_release
+          asset: asciinema-trim_{{trimV .Version}}_checksums.txt
+          algorithm: sha256
       - version_constraint: "true"
         url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
         asset: asciinema-trim_{{.OS}}_{{.Arch}}.{{.Format}}
@@ -92396,6 +92584,9 @@ packages:
           type: github_release
           asset: asciinema-trim_{{trimV .Version}}_checksums.txt
           algorithm: sha256
+        slsa_provenance:
+          type: github_release
+          asset: multiple.intoto.jsonl
   - type: github_content
     repo_owner: suzuki-shunsuke
     repo_name: checkout-merged-branch-with-ci-info
