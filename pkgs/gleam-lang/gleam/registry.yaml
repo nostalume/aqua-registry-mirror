@@ -98,8 +98,8 @@ packages:
           darwin: macos
         checksum:
           type: github_release
-          asset: "{{.Asset}}.sha256"
-          algorithm: sha256
+          asset: "{{.Asset}}.sha512"
+          algorithm: sha512
         overrides:
           - goos: darwin
             goarch: amd64
@@ -125,8 +125,8 @@ packages:
           windows: pc-windows-msvc
         checksum:
           type: github_release
-          asset: "{{.Asset}}.sha256"
-          algorithm: sha256
+          asset: "{{.Asset}}.sha512"
+          algorithm: sha512
         overrides:
           - goos: windows
             format: zip
@@ -143,8 +143,8 @@ packages:
           windows: pc-windows-msvc
         checksum:
           type: github_release
-          asset: "{{.Asset}}.sha256"
-          algorithm: sha256
+          asset: "{{.Asset}}.sha512"
+          algorithm: sha512
         overrides:
           - goos: windows
             format: zip
@@ -163,8 +163,8 @@ packages:
           windows: pc-windows-msvc
         checksum:
           type: github_release
-          asset: "{{.Asset}}.sha256"
-          algorithm: sha256
+          asset: "{{.Asset}}.sha512"
+          algorithm: sha512
         overrides:
           - goos: windows
             format: zip

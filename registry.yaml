@@ -3601,12 +3601,36 @@ packages:
   - type: github_release
     repo_owner: FairwindsOps
     repo_name: polaris
-    asset: polaris_{{.OS}}_{{.Arch}}.tar.gz
     description: Validation of best practices in your Kubernetes clusters
-    checksum:
-      type: github_release
-      asset: checksums.txt
-      algorithm: sha256
+    version_constraint: "false"
+    version_overrides:
+      - version_constraint: semver("< 10.2.0")
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: polaris_{{.OS}}_{{.Arch}}.{{.Format}}
+        format: tar.gz
+        checksum:
+          type: github_release
+          asset: checksums.txt
+          algorithm: sha256
+      - version_constraint: "true"
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: polaris_{{trimV .Version}}_{{.OS}}_{{.Arch}}.{{.Format}}
+        format: tar.gz
+        supported_envs:
+          - darwin
+          - linux
+          - windows/amd64
+        checksum:
+          type: github_release
+          asset: checksums.txt
+          algorithm: sha256
+          cosign:
+            bundle:
+              type: github_release
+              asset: checksums.txt.sigstore.json
+            opts:
+              - --key
+              - https://artifacts.fairwinds.com/cosign-p256.pub
   - type: github_release
     repo_owner: FairwindsOps
     repo_name: rbac-lookup
@@ -4152,6 +4176,52 @@ packages:
           - linux/amd64
         github_artifact_attestations:
           signer_workflow: GitGuardian/ggshield/\.github/workflows/tag\.yml
+  - type: github_release
+    repo_owner: GitTools
+    repo_name: GitVersion
+    aliases:
+      - name: gittools/gitversion
+    description: From git log to SemVer in no time
+    files:
+      - name: gitversion
+    version_constraint: "false"
+    version_overrides:
+      - version_constraint: semver("<= 6.0.3")
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: gitversion-{{.OS}}-{{.Arch}}-{{.Version}}.{{.Format}}
+        format: tar.gz
+        supported_envs:
+          - linux
+          - darwin
+          - windows
+        replacements:
+          amd64: x64
+          darwin: osx
+          windows: win
+        overrides:
+          - goos: windows
+            format: zip
+        checksum:
+          enabled: false
+      - version_constraint: "true"
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: gitversion-{{.OS}}-{{.Arch}}-{{.Version}}.{{.Format}}
+        format: tar.gz
+        supported_envs:
+          - linux
+          - darwin
+          - windows
+        replacements:
+          amd64: x64
+          darwin: osx
+          windows: win
+        overrides:
+          - goos: windows
+            format: zip
+        checksum:
+          enabled: false
+        github_artifact_attestations:
+          signer_workflow: GitTools/GitVersion/\.github/workflows/ci\.yml
   - type: github_release
     repo_owner: GoTestTools
     repo_name: gotestfmt
@@ -23709,6 +23779,64 @@ packages:
           - goos: windows
             format: zip
   - type: github_release
+    repo_owner: cachix
+    repo_name: secretspec
+    description: Declare secrets once. Store them anywhere
+    version_constraint: "false"
+    version_overrides:
+      - version_constraint: Version == "v0.2.0"
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: secretspec-{{.Arch}}-{{.OS}}.{{.Format}}
+        format: tar.xz
+        windows_arm_emulation: true
+        files:
+          - name: secretspec
+            src: secretspec-{{.Arch}}-{{.OS}}/secretspec
+        replacements:
+          amd64: x86_64
+          darwin: apple-darwin
+          linux: unknown-linux-gnu
+          windows: pc-windows-msvc
+        checksum:
+          type: github_release
+          asset: "{{.Asset}}.sha256"
+          algorithm: sha256
+        overrides:
+          - goos: darwin
+            replacements:
+              arm64: aarch64
+          - goos: windows
+            format: zip
+            files:
+              - name: secretspec
+        supported_envs:
+          - darwin
+          - windows
+          - amd64
+      - version_constraint: "true"
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: secretspec-{{.Arch}}-{{.OS}}.{{.Format}}
+        format: tar.xz
+        windows_arm_emulation: true
+        files:
+          - name: secretspec
+            src: secretspec-{{.Arch}}-{{.OS}}/secretspec
+        replacements:
+          amd64: x86_64
+          arm64: aarch64
+          darwin: apple-darwin
+          linux: unknown-linux-gnu
+          windows: pc-windows-msvc
+        checksum:
+          type: github_release
+          asset: "{{.Asset}}.sha256"
+          algorithm: sha256
+        overrides:
+          - goos: windows
+            format: zip
+            files:
+              - name: secretspec
+  - type: github_release
     repo_owner: caddyserver
     repo_name: caddy
     description: Fast, multi-platform web server with automatic HTTPS
@@ -31666,6 +31794,46 @@ packages:
           windows: pc-windows-msvc
         github_artifact_attestations:
           signer_workflow: ctron/oidc-cli/.github/workflows/release.yaml
+  - type: github_release
+    repo_owner: ctxrs
+    repo_name: ctx
+    description: Search the coding agent history already on your machine
+    version_constraint: "false"
+    version_overrides:
+      - version_constraint: Version == "v0.20.0"
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: ctx-{{.OS}}-{{.Arch}}
+        format: raw
+        windows_arm_emulation: true
+        replacements:
+          amd64: x64
+          darwin: macos
+        checksum:
+          type: github_release
+          asset: SHA256SUMS
+          algorithm: sha256
+        supported_envs:
+          - darwin
+          - windows
+          - amd64
+      - version_constraint: semver("<= 0.19.0")
+        no_asset: true
+      - version_constraint: "true"
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: ctx-{{.OS}}-{{.Arch}}
+        format: raw
+        windows_arm_emulation: true
+        replacements:
+          amd64: x64
+          darwin: macos
+        checksum:
+          type: github_release
+          asset: SHA256SUMS
+          algorithm: sha256
+        overrides:
+          - goos: linux
+            replacements:
+              arm64: aarch64
   - type: github_release
     repo_owner: cubefs
     repo_name: cubefs
@@ -43746,29 +43914,6 @@ packages:
           - goos: windows
             format: zip
   - type: github_release
-    repo_owner: gittools
-    repo_name: gitversion
-    description: From git log to SemVer in no time
-    version_constraint: "false"
-    version_overrides:
-      - version_constraint: "true"
-        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
-        asset: gitversion-{{.OS}}-{{.Arch}}-{{.Version}}.{{.Format}}
-        format: tar.gz
-        supported_envs:
-          - linux
-          - darwin
-          - windows
-        replacements:
-          amd64: x64
-          darwin: osx
-          windows: win
-        overrides:
-          - goos: windows
-            format: zip
-        checksum:
-          enabled: false
-  - type: github_release
     repo_owner: gittower
     repo_name: git-flow-next
     description: A modern reimplementation of git-flow in Go that offers greater flexibility while maintaining backward compatibility with the original git-flow and git-flow-avh
@@ -44198,8 +44343,8 @@ packages:
           darwin: macos
         checksum:
           type: github_release
-          asset: "{{.Asset}}.sha256"
-          algorithm: sha256
+          asset: "{{.Asset}}.sha512"
+          algorithm: sha512
         overrides:
           - goos: darwin
             goarch: amd64
@@ -44225,8 +44370,8 @@ packages:
           windows: pc-windows-msvc
         checksum:
           type: github_release
-          asset: "{{.Asset}}.sha256"
-          algorithm: sha256
+          asset: "{{.Asset}}.sha512"
+          algorithm: sha512
         overrides:
           - goos: windows
             format: zip
@@ -44243,8 +44388,8 @@ packages:
           windows: pc-windows-msvc
         checksum:
           type: github_release
-          asset: "{{.Asset}}.sha256"
-          algorithm: sha256
+          asset: "{{.Asset}}.sha512"
+          algorithm: sha512
         overrides:
           - goos: windows
             format: zip
@@ -44263,8 +44408,8 @@ packages:
           windows: pc-windows-msvc
         checksum:
           type: github_release
-          asset: "{{.Asset}}.sha256"
-          algorithm: sha256
+          asset: "{{.Asset}}.sha512"
+          algorithm: sha512
         overrides:
           - goos: windows
             format: zip
@@ -60740,10 +60885,18 @@ packages:
       - linux
       - amd64
     rosetta2: true
-    checksum:
-      type: github_release
-      asset: "{{.Asset}}.sha256"
-      algorithm: sha256
+    version_constraint: "false"
+    version_overrides:
+      - version_constraint: semver("<= 1.23.0")
+        checksum:
+          type: github_release
+          asset: "{{.Asset}}.sha256"
+          algorithm: sha256
+      - version_constraint: "true"
+        checksum:
+          type: github_release
+          asset: "{{.Asset}}.sha512"
+          algorithm: sha512
   - type: github_release
     repo_owner: kubernetes-sigs
     repo_name: gwctl
@@ -71212,6 +71365,34 @@ packages:
           algorithm: sha256
   - type: github_release
     repo_owner: nao1215
+    repo_name: atago
+    description: "Tests CLI behavior from plain YAML: exit codes, output, files, snapshots, and interactive terminals (PTY/TUI)"
+    version_constraint: "false"
+    version_overrides:
+      - version_constraint: "true"
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: atago_{{trimV .Version}}_{{.OS}}_{{.Arch}}.{{.Format}}
+        format: tar.gz
+        checksum:
+          type: github_release
+          asset: checksums.txt
+          algorithm: sha256
+          github_artifact_attestations:
+            signer_workflow: nao1215/atago/.github/workflows/release.yml
+          cosign:
+            opts:
+              - --certificate-identity-regexp
+              - "^https://github\\.com/nao1215/atago/\\.github/workflows/.+\\.ya?ml@refs/tags/\\Q{{.Version}}\\E$"
+              - --certificate-oidc-issuer
+              - https://token.actions.githubusercontent.com
+            bundle:
+              type: github_release
+              asset: checksums.txt.sigstore.json
+        overrides:
+          - goos: windows
+            format: zip
+  - type: github_release
+    repo_owner: nao1215
     repo_name: gup
     description: 'gup - Update binaries installed by "go install" with goroutines'
     version_constraint: "false"
@@ -75134,11 +75315,6 @@ packages:
           type: github_release
           asset: checksums.txt
           algorithm: sha1
-      # TODO support GitHub Artifact Attestation
-      # https://github.com/openziti/zrok/releases/tag/v0.4.49
-      # > CHANGE: Release binary and text artifacts are now accompanied by provenance attestations
-      # github_artifact_attestations:
-      #   signer_workflow:
       - version_constraint: "true"
         url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
         asset: zrok_{{trimV .Version}}_{{.OS}}_{{.Arch}}.{{.Format}}
@@ -75148,6 +75324,8 @@ packages:
           type: github_release
           asset: checksums.sha256.txt
           algorithm: sha256
+        github_artifact_attestations:
+          signer_workflow: openziti/zrok/\.github/workflows/release\.yml
   - type: github_release
     repo_owner: operator-framework
     repo_name: operator-registry
@@ -76081,6 +76259,23 @@ packages:
               arm64: aarch64
           - goos: windows
             format: zip
+      - version_constraint: semver("< 0.8.0")
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: ouch-{{.Arch}}-{{.OS}}.{{.Format}}
+        format: tar.gz
+        rosetta2: true
+        files:
+          - name: ouch
+            src: "{{.AssetWithoutExt}}/ouch"
+        replacements:
+          amd64: x86_64
+          arm64: aarch64
+          darwin: apple-darwin
+          linux: unknown-linux-musl
+          windows: pc-windows-msvc
+        overrides:
+          - goos: windows
+            format: zip
       - version_constraint: "true"
         url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
         asset: ouch-{{.Arch}}-{{.OS}}.{{.Format}}
@@ -76098,6 +76293,8 @@ packages:
         overrides:
           - goos: windows
             format: zip
+        github_artifact_attestations:
+          signer_workflow: ouch-org/ouch/\.github/workflows/draft-release-automatic-trigger\.yml
   - type: github_release
     repo_owner: out-of-cheese-error
     repo_name: the-way
@@ -92475,6 +92672,28 @@ packages:
           - goos: windows
             format: zip
   - type: github_release
+    repo_owner: supernovae-st
+    repo_name: nika
+    description: Workflow language and runner for AI jobs - one .nika.yaml file, statically checked before any token is spent, hash-chained run traces
+    version_constraint: "false"
+    version_overrides:
+      - version_constraint: semver("<= 0.80.0-alpha.4")
+        no_asset: true
+      - version_constraint: "true"
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: nika-{{.OS}}-{{.Arch}}-{{trimV .Version}}.{{.Format}}
+        format: tar.gz
+        replacements:
+          amd64: x64
+          darwin: macos
+        checksum:
+          type: github_release
+          asset: SHA256SUMS
+          algorithm: sha256
+        supported_envs:
+          - linux
+          - darwin
+  - type: github_release
     repo_owner: superradcompany
     repo_name: microsandbox
     aliases:
@@ -92483,11 +92702,10 @@ packages:
     description: Self-Hosted Platform for Secure Execution of Untrusted User/AI Code
     files:
       - name: msb
-    version_prefix: microsandbox-v
     version_constraint: "false"
     version_overrides:
-      - version_constraint: "true"
-        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+      - version_constraint: semver("<= 0.2.6")
+        version_prefix: microsandbox-v
         asset: microsandbox-{{.SemVer}}-{{.OS}}-{{.Arch}}.{{.Format}}
         format: tar.gz
         files:
@@ -92515,6 +92733,42 @@ packages:
         supported_envs:
           - linux
           - darwin/arm64
+      - version_constraint: semver("<= 0.5.10")
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: microsandbox-{{.OS}}-{{.Arch}}.{{.Format}}
+        format: tar.gz
+        replacements:
+          arm64: aarch64
+        checksum:
+          type: github_release
+          asset: checksums.sha256
+          algorithm: sha256
+        overrides:
+          - goos: linux
+            replacements:
+              amd64: x86_64
+        supported_envs:
+          - linux
+          - darwin/arm64
+      - version_constraint: "true"
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: microsandbox-{{.OS}}-{{.Arch}}.{{.Format}}
+        format: tar.gz
+        replacements:
+          amd64: x86_64
+          arm64: aarch64
+        checksum:
+          type: github_release
+          asset: checksums.sha256
+          algorithm: sha256
+        overrides:
+          - goos: darwin
+            replacements:
+              amd64: amd64
+        supported_envs:
+          - linux
+          - darwin/arm64
+          - windows
   - type: github_release
     repo_owner: suzuki-shunsuke
     repo_name: akoi
@@ -93595,6 +93849,37 @@ packages:
               - https://github.com/suzuki-shunsuke/github-comment/releases/download/{{.Version}}/github-comment_{{trimV .Version}}_checksums.txt.pem
   - type: github_release
     repo_owner: suzuki-shunsuke
+    repo_name: langcheck
+    description: langcheck is a CLI for checking if disallowed characters are included in files and texts. This is useful to prevent coding agents from using disallowed characters in code, commit messages, issues, pull requests, and so on
+    version_constraint: "false"
+    version_overrides:
+      - version_constraint: "true"
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: langcheck_{{.OS}}_{{.Arch}}.{{.Format}}
+        format: tar.gz
+        checksum:
+          type: github_release
+          asset: langcheck_checksums.txt
+          algorithm: sha256
+          cosign:
+            opts:
+              - --certificate-oidc-issuer
+              - https://token.actions.githubusercontent.com
+              - --certificate-identity-regexp
+              - "^https://github\\.com/suzuki-shunsuke/go-release-workflow/\\.github/workflows/release\\.yaml@.+$"
+            bundle:
+              type: github_release
+              asset: langcheck_checksums.txt.sigstore.json
+        slsa_provenance:
+          type: github_release
+          asset: multiple.intoto.jsonl
+        github_artifact_attestations:
+          signer_workflow: suzuki-shunsuke/go-release-workflow/.github/workflows/release.yaml
+        overrides:
+          - goos: windows
+            format: zip
+  - type: github_release
+    repo_owner: suzuki-shunsuke
     repo_name: matchfile
     description: CLI tool to check file paths are matched to the condition
     version_constraint: "false"
@@ -93705,7 +93990,7 @@ packages:
     description: Linter to check newlines at the end of files
     version_constraint: "false"
     version_overrides:
-      - version_constraint: "true"
+      - version_constraint: semver("<= 0.1.2")
         url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
         asset: nllint_{{.OS}}_{{.Arch}}.{{.Format}}
         format: tar.gz
@@ -93729,6 +94014,52 @@ packages:
               - https://github.com/suzuki-shunsuke/nllint/releases/download/{{.Version}}/nllint_{{trimV .Version}}_checksums.txt.sig
               - --certificate
               - https://github.com/suzuki-shunsuke/nllint/releases/download/{{.Version}}/nllint_{{trimV .Version}}_checksums.txt.pem
+      - version_constraint: semver("<= 1.1.0")
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: nllint_{{.OS}}_{{.Arch}}.{{.Format}}
+        format: tar.gz
+        overrides:
+          - goos: windows
+            format: zip
+        slsa_provenance:
+          type: github_release
+          asset: multiple.intoto.jsonl
+        checksum:
+          type: github_release
+          asset: nllint_{{trimV .Version}}_checksums.txt
+          algorithm: sha256
+          cosign:
+            bundle:
+              type: github_release
+              asset: nllint_{{trimV .Version}}_checksums.txt.bundle
+            opts:
+              - --certificate-identity-regexp
+              - "https://github\\.com/suzuki-shunsuke/go-release-workflow/\\.github/workflows/release\\.yaml@.*"
+              - --certificate-oidc-issuer
+              - "https://token.actions.githubusercontent.com"
+      - version_constraint: "true"
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: nllint_{{.OS}}_{{.Arch}}.{{.Format}}
+        format: tar.gz
+        overrides:
+          - goos: windows
+            format: zip
+        slsa_provenance:
+          type: github_release
+          asset: multiple.intoto.jsonl
+        checksum:
+          type: github_release
+          asset: nllint_{{trimV .Version}}_checksums.txt
+          algorithm: sha256
+          cosign:
+            bundle:
+              type: github_release
+              asset: nllint_{{trimV .Version}}_checksums.txt.sigstore.json
+            opts:
+              - --certificate-identity-regexp
+              - "https://github\\.com/suzuki-shunsuke/go-release-workflow/\\.github/workflows/release\\.yaml@.*"
+              - --certificate-oidc-issuer
+              - "https://token.actions.githubusercontent.com"
   - type: github_release
     repo_owner: suzuki-shunsuke
     repo_name: pinact
@@ -94960,6 +95291,17 @@ packages:
           - goos: linux
             replacements:
               arm64: aarch64
+      - version_constraint: semver("<= 0.8.4")
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: cargo-llvm-cov-{{.Arch}}-{{.OS}}.{{.Format}}
+        format: tar.gz
+        windows_arm_emulation: true
+        replacements:
+          amd64: x86_64
+          arm64: aarch64
+          darwin: apple-darwin
+          linux: unknown-linux-musl
+          windows: pc-windows-msvc
       - version_constraint: "true"
         url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
         asset: cargo-llvm-cov-{{.Arch}}-{{.OS}}.{{.Format}}
@@ -94971,6 +95313,8 @@ packages:
           darwin: apple-darwin
           linux: unknown-linux-musl
           windows: pc-windows-msvc
+        github_artifact_attestations:
+          signer-workflow: taiki-e/github-actions/\.github/workflows/rust-release\.yml
   - type: github_release
     repo_owner: tailor-platform
     repo_name: patterner
@@ -97272,8 +97616,8 @@ packages:
           windows: pc-windows-msvc
         checksum:
           type: github_release
-          asset: "{{.Asset}}.sha256"
-          algorithm: sha256
+          asset: "{{.Asset}}.sha512"
+          algorithm: sha512
         overrides:
           - goos: windows
             format: zip
@@ -97290,8 +97634,8 @@ packages:
           windows: pc-windows-msvc
         checksum:
           type: github_release
-          asset: "{{.Asset}}.sha256"
-          algorithm: sha256
+          asset: "{{.Asset}}.sha512"
+          algorithm: sha512
         overrides:
           - goos: windows
             format: zip
@@ -103237,6 +103581,8 @@ packages:
         overrides:
           - goos: windows
             format: zip
+        github_artifact_attestations:
+          signer-workflow: wasilibs/actions/\.github/workflows/release\.yaml
   - type: github_release
     repo_owner: wasm-bindgen
     repo_name: wasm-pack
@@ -103654,6 +104000,10 @@ packages:
           type: github_release
           asset: SHA512SUMS
           algorithm: sha512
+          minisign:
+            type: github_release
+            asset: SHA512SUMS.auto.minisig
+            public_key: RWRxgTERVHnagvTTKlALKHIBLnPb5hHU2BcX6fe/MDXLSXvKu70Lft0b
         overrides:
           - goos: linux
             goarch: amd64
@@ -103681,6 +104031,10 @@ packages:
           type: github_release
           asset: SHA512SUMS
           algorithm: sha512
+          minisign:
+            type: github_release
+            asset: SHA512SUMS.auto.minisig
+            public_key: RWRxgTERVHnagvTTKlALKHIBLnPb5hHU2BcX6fe/MDXLSXvKu70Lft0b
         overrides:
           - goos: linux
             goarch: amd64
@@ -103709,6 +104063,10 @@ packages:
           type: github_release
           asset: SHA512SUMS
           algorithm: sha512
+          minisign:
+            type: github_release
+            asset: SHA512SUMS.auto.minisig
+            public_key: RWRxgTERVHnagvTTKlALKHIBLnPb5hHU2BcX6fe/MDXLSXvKu70Lft0b
         overrides:
           - goos: linux
             goarch: amd64
@@ -103736,6 +104094,10 @@ packages:
           type: github_release
           asset: SHA512SUMS
           algorithm: sha512
+          minisign:
+            type: github_release
+            asset: SHA512SUMS.auto.minisig
+            public_key: RWRxgTERVHnagvTTKlALKHIBLnPb5hHU2BcX6fe/MDXLSXvKu70Lft0b
         overrides:
           - goos: linux
             goarch: amd64
@@ -103928,8 +104290,8 @@ packages:
           windows: pc-windows-msvc
         checksum:
           type: github_release
-          asset: "{{.Asset}}.sha256"
-          algorithm: sha256
+          asset: "{{.Asset}}.sha512"
+          algorithm: sha512
         overrides:
           - goos: windows
             format: zip
@@ -103948,8 +104310,8 @@ packages:
           windows: pc-windows-msvc
         checksum:
           type: github_release
-          asset: "{{.Asset}}.sha256"
-          algorithm: sha256
+          asset: "{{.Asset}}.sha512"
+          algorithm: sha512
         overrides:
           - goos: windows
             format: zip
