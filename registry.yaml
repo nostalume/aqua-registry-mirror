@@ -44375,7 +44375,7 @@ packages:
         overrides:
           - goos: windows
             format: zip
-      - version_constraint: semver("<= 1.10.0")
+      - version_constraint: semver("<= 1.9.1")
         url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
         asset: gleam-{{.Version}}-{{.Arch}}-{{.OS}}.{{.Format}}
         format: tar.gz
@@ -44396,6 +44396,36 @@ packages:
         github_artifact_attestations:
           predicate_type: https://spdx.dev/Document/v2.3
           signer_workflow: gleam-lang/gleam/\.github/workflows/release\.yaml
+      - version_constraint: semver("<= 1.10.0")
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: gleam-{{.Version}}-{{.Arch}}-{{.OS}}.{{.Format}}
+        format: tar.gz
+        windows_arm_emulation: true
+        replacements:
+          amd64: x86_64
+          arm64: aarch64
+          darwin: apple-darwin
+          linux: unknown-linux-musl
+          windows: pc-windows-msvc
+        checksum:
+          type: github_release
+          asset: "{{.Asset}}.sha512"
+          algorithm: sha512
+        overrides:
+          - goos: windows
+            format: zip
+        cosign:
+          bundle:
+            type: github_release
+            asset: "{{.Asset}}.sigstore"
+          opts:
+            - --certificate-identity
+            - https://github.com/gleam-lang/gleam/.github/workflows/release.yaml@refs/tags/{{.Version}}
+            - --certificate-oidc-issuer
+            - https://token.actions.githubusercontent.com
+        github_artifact_attestations:
+          predicate_type: https://spdx.dev/Document/v2.3
+          signer_workflow: gleam-lang/gleam/\.github/workflows/release\.yaml
       - version_constraint: "true"
         url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
         asset: gleam-{{.Version}}-{{.Arch}}-{{.OS}}.{{.Format}}
@@ -44413,6 +44443,15 @@ packages:
         overrides:
           - goos: windows
             format: zip
+        cosign:
+          bundle:
+            type: github_release
+            asset: "{{.Asset}}.sigstore"
+          opts:
+            - --certificate-identity
+            - https://github.com/gleam-lang/gleam/.github/workflows/release.yaml@refs/tags/{{.Version}}
+            - --certificate-oidc-issuer
+            - https://token.actions.githubusercontent.com
         github_artifact_attestations:
           predicate_type: https://spdx.dev/Document/v2.3
           signer_workflow: gleam-lang/gleam/\.github/workflows/release\.yaml
@@ -91506,6 +91545,32 @@ packages:
         checksum:
           type: github_release
           asset: checksums.txt
+          algorithm: sha256
+  - type: github_release
+    repo_owner: sters
+    repo_name: diffnest
+    description: A diff tool for structured data files like YAML, JSON
+    version_constraint: "false"
+    version_overrides:
+      - version_constraint: Version == "v1.2.0"
+        no_asset: true
+      - version_constraint: semver("<= 1.4.0")
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: diffnest_{{trimV .Version}}_{{.OS}}_{{.Arch}}.{{.Format}}
+        format: tar.gz
+        checksum:
+          type: github_release
+          asset: diffnest_{{trimV .Version}}_checksums.txt
+          algorithm: sha256
+      - version_constraint: "true"
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: diffnest_{{trimV .Version}}_{{.OS}}-{{.Arch}}.{{.Format}}
+        format: tar.gz
+        replacements:
+          arm64: aarch64
+        checksum:
+          type: github_release
+          asset: diffnest_{{trimV .Version}}_checksums.txt
           algorithm: sha256
   - type: github_release
     repo_owner: stoplightio
