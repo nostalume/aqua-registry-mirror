@@ -8391,6 +8391,48 @@ packages:
           - linux
           - darwin
   - type: github_release
+    repo_owner: StanMarek
+    repo_name: ghost-complete
+    description: Terminal autocomplete engine with a PTY proxy and shell specifications for Ghostty
+    version_constraint: "false"
+    version_overrides:
+      - version_constraint: semver("<= 0.8.1")
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: ghost-complete-{{.Arch}}-{{.OS}}.{{.Format}}
+        format: tar.xz
+        replacements:
+          amd64: x86_64
+          arm64: aarch64
+          darwin: apple-darwin
+        checksum:
+          type: github_release
+          asset: "{{.Asset}}.sha256"
+          algorithm: sha256
+        files:
+          - name: ghost-complete
+            src: ghost-complete-{{.Arch}}-{{.OS}}/ghost-complete
+        supported_envs:
+          - darwin
+      - version_constraint: "true"
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: ghost-complete-{{.Arch}}-{{.OS}}.{{.Format}}
+        format: tar.xz
+        replacements:
+          amd64: x86_64
+          arm64: aarch64
+          darwin: apple-darwin
+        checksum:
+          type: github_release
+          asset: "{{.Asset}}.sha256"
+          algorithm: sha256
+        files:
+          - name: ghost-complete
+            src: ghost-complete-{{.Arch}}-{{.OS}}/ghost-complete
+        supported_envs:
+          - darwin
+        github_artifact_attestations:
+          signer_workflow: StanMarek/ghost-complete/\.github/workflows/release\.yml
+  - type: github_release
     repo_owner: Stranger6667
     repo_name: jsonschema
     description: A high-performance JSON Schema validator for Rust
@@ -64689,7 +64731,7 @@ packages:
     description: General Linter powered by Jsonnet
     version_constraint: "false"
     version_overrides:
-      - version_constraint: "true"
+      - version_constraint: semver("<= 0.4.11")
         url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
         asset: lintnet_{{.OS}}_{{.Arch}}.{{.Format}}
         format: tar.gz
@@ -64705,14 +64747,37 @@ packages:
           algorithm: sha256
           cosign:
             opts:
-              - --certificate-identity-regexp
-              - "https://github\\.com/suzuki-shunsuke/go-release-workflow/\\.github/workflows/release\\.yaml@.*"
-              - --certificate-oidc-issuer
-              - "https://token.actions.githubusercontent.com"
               - --signature
               - https://github.com/lintnet/lintnet/releases/download/{{.Version}}/lintnet_{{trimV .Version}}_checksums.txt.sig
               - --certificate
               - https://github.com/lintnet/lintnet/releases/download/{{.Version}}/lintnet_{{trimV .Version}}_checksums.txt.pem
+              - --certificate-identity-regexp
+              - "https://github\\.com/suzuki-shunsuke/go-release-workflow/\\.github/workflows/release\\.yaml@.*"
+              - --certificate-oidc-issuer
+              - "https://token.actions.githubusercontent.com"
+      - version_constraint: "true"
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: lintnet_{{.OS}}_{{.Arch}}.{{.Format}}
+        format: tar.gz
+        overrides:
+          - goos: windows
+            format: zip
+        slsa_provenance:
+          type: github_release
+          asset: multiple.intoto.jsonl
+        checksum:
+          type: github_release
+          asset: lintnet_{{trimV .Version}}_checksums.txt
+          algorithm: sha256
+          cosign:
+            bundle:
+              type: github_release
+              asset: lintnet_{{trimV .Version}}_checksums.txt.bundle
+            opts:
+              - --certificate-identity-regexp
+              - "https://github\\.com/suzuki-shunsuke/go-release-workflow/\\.github/workflows/release\\.yaml@.*"
+              - --certificate-oidc-issuer
+              - "https://token.actions.githubusercontent.com"
   - type: github_release
     repo_owner: linuxkit
     repo_name: linuxkit
@@ -69929,7 +69994,7 @@ packages:
   - type: github_release
     repo_owner: mpyw
     repo_name: suve
-    description: Git-like CLI/GUI for AWS Parameter Store / Secrets Manager, Google Cloud Secret Manager, and Azure Key Vault / App Configuration
+    description: Git-like CLI/TUI/GUI for AWS Parameter Store / Secrets Manager, Google Cloud Secret Manager, and Azure Key Vault / App Configuration
     version_constraint: "false"
     version_overrides:
       - version_constraint: semver("< 1.6.1")
@@ -86848,7 +86913,6 @@ packages:
       - darwin
       - linux
       - amd64
-    rosetta2: true
     files:
       - name: vivid
         src: vivid-{{.Version}}-{{.Arch}}-{{.OS}}/vivid
@@ -86864,6 +86928,14 @@ packages:
           - linux/amd64
           - darwin
         rosetta2: true
+      - version_constraint: semver(">= 0.8.0, < 0.11.0")
+        rosetta2: true
+      - version_constraint: semver("= 0.11.0")
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: vivid-v0.10.1-{{.Arch}}-{{.OS}}.{{.Format}}
+        files:
+          - name: vivid
+            src: vivid-v0.10.1-{{.Arch}}-{{.OS}}/vivid
       - version_constraint: "true"
   - type: github_release
     repo_owner: sheepla
@@ -101964,6 +102036,22 @@ packages:
             replacements: {}
             checksum:
               enabled: false
+  - type: github_release
+    repo_owner: vcsjones
+    repo_name: AzureSignTool
+    description: SignTool Library with Azure Key Vault Support
+    version_constraint: "false"
+    version_overrides:
+      - version_constraint: semver("< 6.0.0")
+        error_message: Please use v6.0.0 or later
+      - version_constraint: "true"
+        url: https://gh-proxy.org/https://github.com/01mf02/jaq/releases/download/{{.Version}}/{{.Asset}}
+        asset: AzureSignTool-{{.Arch}}
+        format: raw
+        replacements:
+          amd64: x64
+        supported_envs:
+          - windows
   - type: github_release
     repo_owner: vectordotdev
     repo_name: vector
