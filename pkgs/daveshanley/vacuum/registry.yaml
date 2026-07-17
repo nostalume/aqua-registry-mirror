@@ -34,6 +34,16 @@ packages:
           type: github_release
           asset: checksums.txt
           algorithm: sha256
+      - version_constraint: semver("<= 0.29.9")
+        url: https://gh-proxy.org/https://github.com/daveshanley/vacuum/releases/download/{{.Version}}/{{.Asset}}
+        asset: vacuum_{{trimV .Version}}_{{.OS}}_{{.Arch}}.{{.Format}}
+        format: tar.gz
+        replacements:
+          amd64: x86_64
+        checksum:
+          type: github_release
+          asset: checksums.txt
+          algorithm: sha256
       - version_constraint: "true"
         url: https://gh-proxy.org/https://github.com/daveshanley/vacuum/releases/download/{{.Version}}/{{.Asset}}
         asset: vacuum_{{trimV .Version}}_{{.OS}}_{{.Arch}}.{{.Format}}
@@ -44,3 +54,12 @@ packages:
           type: github_release
           asset: checksums.txt
           algorithm: sha256
+          cosign:
+            bundle:
+              type: github_release
+              asset: checksums.txt.sigstore.json
+            opts:
+              - --certificate-identity
+              - https://github.com/daveshanley/vacuum/.github/workflows/publish.yaml@refs/heads/main
+              - --certificate-oidc-issuer
+              - https://token.actions.githubusercontent.com
