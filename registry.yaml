@@ -14313,7 +14313,6 @@ packages:
     description: Claude Code is an agentic coding tool that lives in your terminal, understands your codebase, and helps you code faster by executing routine tasks, explaining complex code, and handling git workflows - all through natural language commands
     files:
       - name: claude
-    version_source: github_tag
     version_constraint: "false"
     version_overrides:
       - version_constraint: Version == "v2.1.88"
@@ -94721,6 +94720,9 @@ packages:
               - https://github.com/suzuki-shunsuke/tfrstate/releases/download/{{.Version}}/tfrstate_{{trimV .Version}}_checksums.txt.sig
               - --certificate
               - https://github.com/suzuki-shunsuke/tfrstate/releases/download/{{.Version}}/tfrstate_{{trimV .Version}}_checksums.txt.pem
+        slsa_provenance:
+          type: github_release
+          asset: multiple.intoto.jsonl
         overrides:
           - goos: windows
             format: zip
